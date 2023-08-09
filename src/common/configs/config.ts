@@ -14,12 +14,12 @@ const config: Config = {
     version: '1.5',
     path: 'api',
   },
-  graphql: {
+  /*graphql: {
     playgroundEnabled: true,
     debug: true,
     schemaDestination: './src/schema.graphql',
     sortSchema: true,
-  },
+  },*/
   security: {
     expiresIn: '2m',
     refreshIn: '7d',

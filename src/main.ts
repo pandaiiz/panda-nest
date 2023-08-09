@@ -12,7 +12,7 @@ import type {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.setGlobalPrefix('api');
   // Validation
   app.useGlobalPipes(new ValidationPipe());
 
@@ -34,6 +34,7 @@ async function bootstrap() {
       .setTitle(swaggerConfig.title || 'Nestjs')
       .setDescription(swaggerConfig.description || 'The nestjs API description')
       .setVersion(swaggerConfig.version || '1.0')
+      .addBearerAuth()
       .build();
     const document = SwaggerModule.createDocument(app, options);
 

@@ -10,9 +10,9 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from './password.service';
-import { SignupInput } from './dto/signup.input';
-import { Token } from './models/token.model';
+import { SignupDto } from './dto/signup.dto';
 import { SecurityConfig } from '../common/configs/config.interface';
+import { Token } from './entities/token.entity';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +23,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async createUser(payload: SignupInput): Promise<Token> {
+  async createUser(payload: SignupDto): Promise<Token> {
     const hashedPassword = await this.passwordService.hashPassword(
       payload.password,
     );
@@ -45,17 +45,17 @@ export class AuthService {
         e instanceof Prisma.PrismaClientKnownRequestError &&
         e.code === 'P2002'
       ) {
-        throw new ConflictException(`Email ${payload.email} already used.`);
+        throw new ConflictException(`Email ${payload.account} already used.`);
       }
       throw new Error(e);
     }
   }
 
-  async login(email: string, password: string): Promise<Token> {
-    const user = await this.prisma.user.findUnique({ where: { email } });
+  async login(account: string, password: string): Promise<Token> {
+    const user = await this.prisma.user.findUnique({ where: { account } });
 
     if (!user) {
-      throw new NotFoundException(`No user found for email: ${email}`);
+      throw new NotFoundException(`用户 ${account}不存在！`);
     }
 
     const passwordValid = await this.passwordService.validatePassword(
@@ -64,7 +64,7 @@ export class AuthService {
     );
 
     if (!passwordValid) {
-      throw new BadRequestException('Invalid password');
+      throw new BadRequestException('密码不正确！');
     }
 
     return this.generateTokens({

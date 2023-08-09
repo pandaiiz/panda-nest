@@ -6,7 +6,7 @@ Table User {
   id String [pk]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  email String [unique, not null]
+  account String [unique, not null]
   password String [not null]
   firstname String
   lastname String

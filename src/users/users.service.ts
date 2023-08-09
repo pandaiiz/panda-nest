@@ -3,6 +3,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { PasswordService } from '../auth/password.service';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { routes } from './routes';
 
 @Injectable()
 export class UsersService {
@@ -45,4 +46,17 @@ export class UsersService {
       where: { id: userId },
     });
   }
+
+  generatePermission = (role: string) => {
+    const actions = role === 'admin' ? ['*'] : ['read'];
+    const result = {};
+    routes.forEach((item) => {
+      if (item.children) {
+        item.children.forEach((child) => {
+          result[child.name] = actions;
+        });
+      }
+    });
+    return result;
+  };
 }

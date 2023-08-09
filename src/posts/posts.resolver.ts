@@ -8,21 +8,15 @@ import {
   Subscription,
   Mutation,
 } from '@nestjs/graphql';
-import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
-import { PubSub } from 'graphql-subscriptions';
 import { UseGuards } from '@nestjs/common';
-import { PaginationArgs } from '../common/pagination/pagination.args';
 import { UserEntity } from '../common/decorators/user.decorator';
 import { User } from '../users/models/user.model';
 import { GqlAuthGuard } from '../auth/gql-auth.guard';
 import { PostIdArgs } from './args/post-id.args';
 import { UserIdArgs } from './args/user-id.args';
 import { Post } from './models/post.model';
-import { PostConnection } from './models/post-connection.model';
 import { PostOrder } from './dto/post-order.input';
 import { CreatePostInput } from './dto/createPost.input';
-
-const pubSub = new PubSub();
 
 @Resolver(() => Post)
 export class PostsResolver {
@@ -30,7 +24,7 @@ export class PostsResolver {
 
   @Subscription(() => Post)
   postCreated() {
-    return pubSub.asyncIterator('postCreated');
+    // return pubSub.asyncIterator('postCreated');
   }
 
   @UseGuards(GqlAuthGuard)
@@ -47,13 +41,13 @@ export class PostsResolver {
         authorId: user.id,
       },
     });
-    pubSub.publish('postCreated', { postCreated: newPost });
+    // pubSub.publish('postCreated', { postCreated: newPost });
     return newPost;
   }
 
-  @Query(() => PostConnection)
+  /*@Query(() => PostConnection)
   async publishedPosts(
-    @Args() { after, before, first, last }: PaginationArgs,
+    // @Args() { after, before, first, last }: PaginationArgs,
     @Args({ name: 'query', type: () => String, nullable: true })
     query: string,
     @Args({
@@ -81,10 +75,10 @@ export class PostsResolver {
             title: { contains: query || '' },
           },
         }),
-      { first, last, before, after },
+      // { first, last, before, after },
     );
     return a;
-  }
+  }*/
 
   @Query(() => [Post])
   userPosts(@Args() id: UserIdArgs) {
