@@ -4,20 +4,15 @@ export class CommonDTO extends IdDTO {
   /**
    * 创建时间
    */
-  readonly createTime: Date;
+  readonly createdAt: Date;
 
   /**
    * 更新时间
    */
-  readonly updateTime: Date;
+  readonly updateAt: Date;
 
   /**
    * 是否删除
    */
   isDelete: boolean;
-
-  /**
-   * 更新次数
-   */
-  version: number;
 }

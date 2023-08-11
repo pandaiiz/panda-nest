@@ -6,7 +6,7 @@ import { UsersService } from './users.service';
 import { User } from './models/user.model';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { generatePermission } from './routes';
+import { generatePermission, routes } from './routes';
 import { AuthGuard } from '@nestjs/passport';
 
 @UseGuards(AuthGuard('jwt'))
@@ -36,7 +36,8 @@ export class UsersController {
       phoneNumber: '13823333333',
       accountId: 'zz-15153424',
       registrationTime: '2021-12-09 05:07:52',
-      permissions: generatePermission('admin'),
+      permissions: generatePermission('user'),
+      routes,
     };
   }
 
@@ -58,10 +59,5 @@ export class UsersController {
       user.password,
       changePassword,
     );
-  }
-
-  @ResolveField('posts')
-  posts(@Parent() author: User) {
-    return this.prisma.user.findUnique({ where: { id: author.id } }).posts();
   }
 }
