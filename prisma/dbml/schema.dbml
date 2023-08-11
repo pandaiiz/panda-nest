@@ -11,7 +11,7 @@ Table User {
   firstname String
   lastname String
   posts Post [not null]
-  role Role [not null]
+  roleId String
 }
 
 Table Post {
@@ -25,9 +25,41 @@ Table Post {
   authorId String
 }
 
-Enum Role {
-  ADMIN
-  USER
+Table Menu {
+  id String [pk]
+  parentId String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  name String [not null]
+  key String [unique, not null]
+  breadcrumb Boolean [default: false]
+  ignore Boolean [default: false]
+  roles MenusOnRoles [not null]
+}
+
+Table Role {
+  id String [pk]
+  name String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  menus MenusOnRoles [not null]
+}
+
+Table MenusOnRoles {
+  menu Menu [not null]
+  menuId String [not null]
+  role Role [not null]
+  roleId String [not null]
+  assignedAt DateTime [default: `now()`, not null]
+  assignedBy String [not null]
+
+  indexes {
+    (menuId, roleId) [pk]
+  }
 }
 
 Ref: Post.authorId > User.id
+
+Ref: MenusOnRoles.menuId > Menu.id
+
+Ref: MenusOnRoles.roleId > Role.id

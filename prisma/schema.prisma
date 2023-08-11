@@ -13,7 +13,7 @@ generator dbml {
 }
 
 model User {
-  id        String   @id @default(cuid())
+  id        String     @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   account   String   @unique
@@ -21,11 +21,11 @@ model User {
   firstname String?
   lastname  String?
   posts     Post[]
-  role      Role
+  roleId    String?
 }
 
 model Post {
-  id        String   @id @default(cuid())
+  id          String     @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   published Boolean
@@ -35,7 +35,32 @@ model Post {
   authorId  String?
 }
 
-enum Role {
-  ADMIN
-  USER
+model Menu {
+  id          String     @id @default(cuid())
+  parentId    String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  name        String
+  key         String     @unique
+  breadcrumb  Boolean?   @default(false)
+  ignore      Boolean?   @default(false)
+  roles       MenusOnRoles[]
+}
+
+model Role {
+  id          String     @id @default(cuid())
+  name        String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  menus       MenusOnRoles[]
+}
+
+model MenusOnRoles {
+  menu       Menu     @relation(fields: [menuId], references: [id])
+  menuId     String
+  role       Role     @relation(fields: [roleId], references: [id])
+  roleId     String
+  assignedAt DateTime @default(now())
+  assignedBy String
+  @@id([menuId, roleId])
 }
