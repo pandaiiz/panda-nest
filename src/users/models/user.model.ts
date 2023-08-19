@@ -1,4 +1,3 @@
-import { Post } from '../../posts/models/post.model';
 import { Role } from '@prisma/client';
 
 export class User {
@@ -10,8 +9,6 @@ export class User {
   lastname?: string;
 
   role: Role;
-
-  posts?: [Post] | null;
 
   password: string;
 

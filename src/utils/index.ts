@@ -18,3 +18,26 @@ export const getPagination = (
     pages,
   };
 };
+
+export const formatToTree = (data) => {
+  // * 先生成parent建立父子关系
+  const obj = {};
+  data.forEach((item) => {
+    obj[item.id] = item;
+  });
+  // * obj -> {1001: {id: 1001, parentId: 0, name: 'AA'}, 1002: {...}}
+  // console.log(obj, "obj")
+  const parentList = [];
+  data.forEach((item) => {
+    const parent = obj[item.parentId];
+    if (parent) {
+      // * 当前项有父节点
+      parent.children = parent.children || [];
+      parent.children.push(item);
+    } else {
+      // * 当前项没有父节点 -> 顶层
+      parentList.push(item);
+    }
+  });
+  return parentList;
+};

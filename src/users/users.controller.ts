@@ -1,25 +1,29 @@
-import { PrismaService } from 'nestjs-prisma';
-import { Parent, Mutation, Args, ResolveField } from '@nestjs/graphql';
-import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { UserEntity } from '../common/decorators/user.decorator';
 import { UsersService } from './users.service';
 import { User } from './models/user.model';
-import { ChangePasswordInput } from './dto/change-password.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { generatePermission, routes } from './routes';
 import { AuthGuard } from '@nestjs/passport';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('user')
 export class UsersController {
-  constructor(
-    private usersService: UsersService,
-    private prisma: PrismaService,
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   @Get('info')
   async getUserInfo(@UserEntity() user: User): Promise<any> {
     return {
+      user,
       name: 'vvv',
       avatar:
         'https://lf1-xgcdn-tos.pstatp.com/obj/vcloud/vadmin/start.8e0e4855ee346a46ccff8ff3e24db27b.png',
@@ -41,18 +45,23 @@ export class UsersController {
     };
   }
 
+  @Get('paging')
+  async getUsersByPaging(@Query() query) {
+    return this.usersService.getUsersByPaging(query);
+  }
+
   @Put('user')
   async updateUser(
     @UserEntity() user: User,
-    @Body() newUserData: UpdateUserInput,
+    @Body() newUserData: UpdateUserDto,
   ) {
     return this.usersService.updateUser(user.id, newUserData);
   }
 
-  @Mutation(() => User)
+  @Patch(':id')
   async changePassword(
     @UserEntity() user: User,
-    @Args('data') changePassword: ChangePasswordInput,
+    @Body() changePassword: ChangePasswordDto,
   ) {
     return this.usersService.changePassword(
       user.id,

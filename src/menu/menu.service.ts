@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { PrismaService } from 'nestjs-prisma';
+import { formatToTree } from '../utils';
 
 @Injectable()
 export class MenuService {
@@ -10,8 +11,9 @@ export class MenuService {
     return this.prisma.menu.create({ data: { ...createMenuDto } });
   }
 
-  findAll() {
-    return this.prisma.menu.findMany({ include: { roles: true } });
+  async findAll() {
+    const menuList = await this.prisma.menu.findMany();
+    return formatToTree(menuList);
   }
 
   findOne(id: string) {
@@ -19,7 +21,7 @@ export class MenuService {
   }
 
   update(id: string, updateMenuDto: UpdateMenuDto) {
-    return this.prisma.role.update({
+    return this.prisma.menu.update({
       data: { ...updateMenuDto },
       where: {
         id,
@@ -28,6 +30,6 @@ export class MenuService {
   }
 
   remove(id: string) {
-    return this.prisma.role.delete({ where: { id } });
+    return this.prisma.menu.delete({ where: { id } });
   }
 }

@@ -12,19 +12,20 @@ export class RoleService {
   }
 
   findAll() {
-    return this.prisma.role.findMany({ include: { menus: true } });
+    return this.prisma.role.findMany();
   }
 
   findOne(id: string) {
     return this.prisma.role.findUnique({ where: { id } });
   }
 
-  update(id: string, updateRoleDto: UpdateRoleDto) {
+  async update(id: string, updateRoleDto: UpdateRoleDto) {
+    const { menus } = updateRoleDto;
     return this.prisma.role.update({
-      data: { ...updateRoleDto },
-      where: {
-        id,
+      data: {
+        menus: JSON.stringify(menus),
       },
+      where: { id },
     });
   }
 

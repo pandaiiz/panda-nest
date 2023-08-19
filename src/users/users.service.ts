@@ -1,8 +1,8 @@
 import { PrismaService } from 'nestjs-prisma';
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PasswordService } from '../auth/password.service';
-import { ChangePasswordInput } from './dto/change-password.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { routes } from './routes';
 
 @Injectable()
@@ -12,7 +12,32 @@ export class UsersService {
     private passwordService: PasswordService,
   ) {}
 
-  updateUser(userId: string, newUserData: UpdateUserInput) {
+  async getUsersByPaging(query) {
+    const { pageSize = 10, current = 1, account } = query;
+    const [users, count] = await this.prisma.$transaction([
+      this.prisma.user.findMany({
+        where: {
+          account: {
+            contains: account,
+          },
+        },
+        select: {
+          id: true,
+          account: true,
+        },
+        skip: +pageSize * (+current - 1),
+        take: +pageSize,
+      }),
+      this.prisma.user.count(),
+    ]);
+    return {
+      data: users,
+      pagination: {
+        total: count,
+      },
+    };
+  }
+  updateUser(userId: string, newUserData: UpdateUserDto) {
     return this.prisma.user.update({
       data: newUserData,
       where: {
@@ -24,7 +49,7 @@ export class UsersService {
   async changePassword(
     userId: string,
     userPassword: string,
-    changePassword: ChangePasswordInput,
+    changePassword: ChangePasswordDto,
   ) {
     const passwordValid = await this.passwordService.validatePassword(
       changePassword.oldPassword,

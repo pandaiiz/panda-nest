@@ -8,21 +8,8 @@ Table User {
   updatedAt DateTime [not null]
   account String [unique, not null]
   password String [not null]
-  firstname String
-  lastname String
-  posts Post [not null]
+  name String
   roleId String
-}
-
-Table Post {
-  id String [pk]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-  published Boolean [not null]
-  title String [not null]
-  content String
-  author User
-  authorId String
 }
 
 Table Menu {
@@ -30,36 +17,19 @@ Table Menu {
   parentId String
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  name String [not null]
+  title String [not null]
   key String [unique, not null]
+  remark String
+  enabled Boolean [default: true]
   breadcrumb Boolean [default: false]
   ignore Boolean [default: false]
-  roles MenusOnRoles [not null]
 }
 
 Table Role {
   id String [pk]
-  name String [not null]
+  title String [not null]
+  key String [unique, not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  menus MenusOnRoles [not null]
+  menus Json
 }
-
-Table MenusOnRoles {
-  menu Menu [not null]
-  menuId String [not null]
-  role Role [not null]
-  roleId String [not null]
-  assignedAt DateTime [default: `now()`, not null]
-  assignedBy String [not null]
-
-  indexes {
-    (menuId, roleId) [pk]
-  }
-}
-
-Ref: Post.authorId > User.id
-
-Ref: MenusOnRoles.menuId > Menu.id
-
-Ref: MenusOnRoles.roleId > Role.id

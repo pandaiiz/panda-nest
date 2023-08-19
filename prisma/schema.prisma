@@ -13,54 +13,33 @@ generator dbml {
 }
 
 model User {
-  id        String     @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   account   String   @unique
   password  String
-  firstname String?
-  lastname  String?
-  posts     Post[]
+  name      String?
   roleId    String?
 }
 
-model Post {
-  id          String     @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean
-  title     String
-  content   String?
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  String?
-}
-
 model Menu {
-  id          String     @id @default(cuid())
+  id          String     @id @default(uuid())
   parentId    String?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  name        String
+  title       String
   key         String     @unique
+  remark      String?
+  enabled     Boolean?   @default(true)
   breadcrumb  Boolean?   @default(false)
   ignore      Boolean?   @default(false)
-  roles       MenusOnRoles[]
 }
 
 model Role {
-  id          String     @id @default(cuid())
-  name        String
+  id          String     @id @default(uuid())
+  title       String
+  key         String     @unique
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  menus       MenusOnRoles[]
-}
-
-model MenusOnRoles {
-  menu       Menu     @relation(fields: [menuId], references: [id])
-  menuId     String
-  role       Role     @relation(fields: [roleId], references: [id])
-  roleId     String
-  assignedAt DateTime @default(now())
-  assignedBy String
-  @@id([menuId, roleId])
+  menus       Json?
 }
