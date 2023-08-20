@@ -1,4 +1,5 @@
 export class CreateRoleDto {
-  name: string;
-  menus: any[];
+  title: string;
+  key: string;
+  menus?: any[];
 }

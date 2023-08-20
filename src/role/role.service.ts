@@ -7,12 +7,21 @@ import { PrismaService } from 'nestjs-prisma';
 export class RoleService {
   constructor(private prisma: PrismaService) {}
   create(createRoleDto: CreateRoleDto) {
-    const { name } = createRoleDto;
-    return this.prisma.role.create({ data: { name } });
+    const { title, key } = createRoleDto;
+    return this.prisma.role.create({
+      data: {
+        key,
+        title,
+      },
+    });
   }
 
   findAll() {
-    return this.prisma.role.findMany();
+    return this.prisma.role.findMany({
+      include: {
+        menus: true,
+      },
+    });
   }
 
   findOne(id: string) {
@@ -20,16 +29,27 @@ export class RoleService {
   }
 
   async update(id: string, updateRoleDto: UpdateRoleDto) {
+    await this.prisma.menusOnRoles.deleteMany({ where: { roleId: id } });
     const { menus } = updateRoleDto;
     return this.prisma.role.update({
       data: {
-        menus: JSON.stringify(menus),
+        menus: {
+          create: menus.map((item) => ({
+            menuId: item,
+          })),
+        },
       },
       where: { id },
     });
   }
 
-  remove(id: string) {
-    return this.prisma.role.delete({ where: { id } });
+  async remove(id: string) {
+    try {
+      const res = await this.prisma.role.delete({ where: { id } });
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
+    return {};
   }
 }

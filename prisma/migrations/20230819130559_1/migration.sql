@@ -47,3 +47,6 @@ CREATE UNIQUE INDEX "Menu_key_key" ON "Menu"("key");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Role_key_key" ON "Role"("key");
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE SET NULL ON UPDATE SET NULL;

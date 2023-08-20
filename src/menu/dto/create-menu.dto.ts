@@ -7,7 +7,7 @@ export class CreateMenuDto {
     example: '菜单列表',
   })
   @IsNotEmpty()
-  name: string;
+  title: string;
 
   @ApiProperty({
     description: '菜单KEY',

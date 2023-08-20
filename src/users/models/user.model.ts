@@ -1,42 +1,10 @@
-import { Role } from '@prisma/client';
-
 export class User {
   id?: string;
   account?: string;
 
-  firstname?: string;
-
-  lastname?: string;
-
-  role: Role;
+  roleId: string;
 
   password: string;
 
-  permissions?: string;
-
   name?: string;
-
-  avatar?: string;
-
-  email?: string;
-
-  job?: string;
-
-  jobName?: string;
-
-  organization?: string;
-
-  organizationName?: string;
-
-  location?: string;
-
-  locationName?: string;
-
-  introduction?: string;
-
-  personalWebsite?: string;
-  verified?: boolean;
-  phoneNumber?: string;
-  accountId?: string;
-  registrationTime?: string;
 }

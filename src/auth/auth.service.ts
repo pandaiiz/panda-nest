@@ -1,10 +1,10 @@
 import { PrismaService } from 'nestjs-prisma';
 import { Prisma, User } from '@prisma/client';
 import {
-  Injectable,
-  NotFoundException,
   BadRequestException,
   ConflictException,
+  Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -13,6 +13,7 @@ import { PasswordService } from './password.service';
 import { SignupDto } from './dto/signup.dto';
 import { SecurityConfig } from '../common/configs/config.interface';
 import { Token } from './entities/token.entity';
+import { formatToTree } from '../utils';
 
 @Injectable()
 export class AuthService {
@@ -72,8 +73,23 @@ export class AuthService {
     });
   }
 
-  validateUser(userId: string): Promise<User> {
-    return this.prisma.user.findUnique({ where: { id: userId } });
+  async validateUser(userId: string): Promise<any> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        role: {
+          include: {
+            menus: {
+              include: {
+                menu: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    const menus = user.role.menus.map((item) => item.menu);
+    return { ...user, menus: formatToTree(menus) };
   }
 
   getUserFromToken(token: string): Promise<User> {

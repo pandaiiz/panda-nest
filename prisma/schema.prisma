@@ -13,33 +13,46 @@ generator dbml {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   account   String   @unique
   password  String
   name      String?
+  role      Role?    @relation(fields: [roleId], references: [id], onDelete: SetNull, onUpdate: SetNull)
   roleId    String?
 }
 
 model Menu {
-  id          String     @id @default(uuid())
-  parentId    String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  title       String
-  key         String     @unique
-  remark      String?
-  enabled     Boolean?   @default(true)
-  breadcrumb  Boolean?   @default(false)
-  ignore      Boolean?   @default(false)
+  id         String   @id @default(cuid())
+  parentId   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  title      String
+  key        String   @unique
+  remark     String?
+  enabled    Boolean? @default(true)
+  breadcrumb Boolean? @default(false)
+  ignore     Boolean? @default(false)
+
+  roles MenusOnRoles[]
 }
 
 model Role {
-  id          String     @id @default(uuid())
-  title       String
-  key         String     @unique
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  menus       Json?
+  id        String         @id @default(cuid())
+  title     String
+  key       String         @unique
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  users     User[]
+  menus     MenusOnRoles[]
+}
+
+model MenusOnRoles {
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId String
+  menu   Menu   @relation(fields: [menuId], references: [id])
+  menuId String
+
+  @@id([roleId, menuId])
 }

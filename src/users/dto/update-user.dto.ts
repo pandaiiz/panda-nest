@@ -1,4 +1,3 @@
 export class UpdateUserDto {
-  firstname?: string;
-  lastname?: string;
+  name?: string;
 }

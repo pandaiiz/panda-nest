@@ -13,24 +13,14 @@ async function main() {
         name: 'Wenhao',
         password:
           '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
-        roleId: 'USER',
       },
     });
-    console.log(user1);
-  } catch (e) {
-    console.log(e);
-  }
-  try {
-    const user2 = await prisma.user.create({
+    const role = await prisma.role.create({
       data: {
-        account: 'billy',
-        name: 'Billy',
-        roleId: 'ADMIN',
-        password:
-          '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
+        title: '超级管理员',
+        key: 'SUPER_ADMIN',
       },
     });
-    console.log(user2);
   } catch (e) {
     console.log(e);
   }
