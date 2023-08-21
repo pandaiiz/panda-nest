@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.dictionary.deleteMany();
   await prisma.user.deleteMany();
   await prisma.menusOnRoles.deleteMany();
   await prisma.role.deleteMany();
@@ -12,6 +13,22 @@ async function main() {
   // 建用户，建菜单，建角色，建用户角色关系
   // 关联关系：用户-角色，角色-菜单
   try {
+    const dictionary = await prisma.dictionary.createMany({
+      data: [
+        {
+          title: '件重',
+          key: 'SINGLE_WEIGHRT',
+        },
+        {
+          title: '品名',
+          key: 'CATEGORY',
+        },
+        {
+          title: '圈号',
+          key: 'CIRCLE',
+        },
+      ],
+    });
     const superRole = await prisma.role.create({
       data: {
         title: '超级管理员',

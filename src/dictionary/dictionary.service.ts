@@ -1,26 +1,86 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDictionaryDto } from './dto/create-dictionary.dto';
 import { UpdateDictionaryDto } from './dto/update-dictionary.dto';
+import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
 export class DictionaryService {
-  create(createDictionaryDto: CreateDictionaryDto) {
-    return 'This action adds a new dictionary';
+  constructor(private prisma: PrismaService) {}
+  create(createDictionaryDto: any) {
+    return this.prisma.dictionary.create({
+      data: createDictionaryDto,
+    });
+  }
+  createItem(createDictionaryItemDto: any) {
+    return this.prisma.dictionaryItem.create({
+      data: createDictionaryItemDto,
+    });
   }
 
   findAll() {
-    return `This action returns all dictionary`;
+    return this.prisma.dictionary.findMany({
+      include: {
+        dictItems: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} dictionary`;
+  findOne(dictId: string) {
+    return this.prisma.dictionary.findUnique({
+      where: { id: dictId },
+    });
+  }
+  async findDictItemByDictId(dictId: string) {
+    const dict = await this.prisma.dictionary.findFirst({
+      where: {
+        id: dictId,
+      },
+      include: {
+        dictItems: true,
+      },
+    });
+    return dict?.dictItems || [];
+  }
+  async findOneByKey(key: string) {
+    const dict = await this.prisma.dictionary.findFirst({
+      where: {
+        key,
+        enabled: true,
+      },
+      include: {
+        dictItems: {
+          where: {
+            enabled: true,
+          },
+          select: {
+            id: true,
+            itemKey: true,
+            title: true,
+          },
+        },
+      },
+    });
+    return dict?.dictItems || [];
   }
 
-  update(id: number, updateDictionaryDto: UpdateDictionaryDto) {
-    return `This action updates a #${id} dictionary`;
+  update(id: string, updateDictionaryDto: any) {
+    console.log(updateDictionaryDto);
+    return this.prisma.dictionary.update({
+      where: { id },
+      data: updateDictionaryDto,
+    });
+  }
+  updateItem(id: string, updateDictionaryItemDto: any) {
+    console.log(updateDictionaryItemDto);
+    return this.prisma.dictionaryItem.update({
+      where: { id },
+      data: updateDictionaryItemDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} dictionary`;
+  remove(id: string) {
+    return this.prisma.dictionary.delete({ where: { id } });
+  }
+  removeItem(id: string) {
+    return this.prisma.dictionaryItem.delete({ where: { id } });
   }
 }

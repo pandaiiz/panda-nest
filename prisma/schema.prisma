@@ -68,10 +68,11 @@ model Specifications {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
 model Customer {
-  id           String   @id @default(cuid())
+  id           String  @id @default(cuid())
   // 客户编号
-  customerCode       String?
+  customerCode String?
   // 款号
   styleNumber  String?
   // 圈号
@@ -79,8 +80,45 @@ model Customer {
   // 件重
   singleWeight String?
 
-  categoryNumber     String?
+  categoryNumber String?
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Dictionary {
+  id      String   @id @default(cuid())
+  // 字典名
+  title   String?
+  // 字典编码
+  key     String?  @unique
+  // 状态 启用停用
+  enabled Boolean? @default(true)
+  // 排序
+  sort    Int?
+  // 备注
+  remark  String?
+
+  dictItems DictionaryItem[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model DictionaryItem {
+  id        String      @id @default(cuid())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  // 字典名称Id
+  dict      Dictionary? @relation(fields: [dictId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  dictId    String?
+  // 行编码
+  itemKey   String?     @unique
+  // 名称
+  title     String?
+  // 状态 启用停用
+  enabled   Boolean?    @default(true)
+  // 排序
+  sort      Int?
+  // 备注
+  remark    String?
 }

@@ -48,8 +48,56 @@ Table MenusOnRoles {
   }
 }
 
+Table Specifications {
+  id String [pk]
+  title String [not null]
+  styleNumber String
+  circleNumber String
+  singleWeight String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Customer {
+  id String [pk]
+  customerCode String
+  styleNumber String
+  circleNumber String
+  singleWeight String
+  categoryNumber String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Dictionary {
+  id String [pk]
+  title String
+  key String [unique]
+  enabled Boolean [default: true]
+  sort Int
+  remark String
+  dictItems DictionaryItem [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table DictionaryItem {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  dict Dictionary
+  dictId String
+  itemKey String [unique]
+  title String
+  enabled Boolean [default: true]
+  sort Int
+  remark String
+}
+
 Ref: User.roleId > Role.id [delete: Set Null]
 
 Ref: MenusOnRoles.roleId > Role.id
 
 Ref: MenusOnRoles.menuId > Menu.id
+
+Ref: DictionaryItem.dictId > Dictionary.id [delete: Set Null]
