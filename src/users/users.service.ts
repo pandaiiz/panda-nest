@@ -24,12 +24,6 @@ export class UsersService {
             contains: account,
           },
         },
-        /*select: {
-          id: true,
-          account: true,
-          name: true,
-          roleId: true,
-        },*/
         skip: +pageSize * (+current - 1),
         take: +pageSize,
       }),

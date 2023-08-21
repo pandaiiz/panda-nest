@@ -16,6 +16,4 @@ export class SignupDto {
   @MinLength(6)
   @IsNotEmpty({ message: '请输入密码' })
   password: string;
-  firstname?: string;
-  lastname?: string;
 }

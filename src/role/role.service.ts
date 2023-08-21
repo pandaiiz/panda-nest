@@ -19,7 +19,13 @@ export class RoleService {
   findAll() {
     return this.prisma.role.findMany({
       include: {
-        menus: true,
+        menus: {
+          where: {
+            menu: {
+              enabled: true,
+            },
+          },
+        },
       },
     });
   }

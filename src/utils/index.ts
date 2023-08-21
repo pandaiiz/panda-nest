@@ -25,8 +25,6 @@ export const formatToTree = (data) => {
   data.forEach((item) => {
     obj[item.id] = item;
   });
-  // * obj -> {1001: {id: 1001, parentId: 0, name: 'AA'}, 1002: {...}}
-  // console.log(obj, "obj")
   const parentList = [];
   data.forEach((item) => {
     const parent = obj[item.parentId];

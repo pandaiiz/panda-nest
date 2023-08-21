@@ -24,18 +24,17 @@ model User {
 }
 
 model Menu {
-  id         String   @id @default(cuid())
+  id         String         @id @default(cuid())
   parentId   String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
   title      String
-  key        String   @unique
+  key        String         @unique
   remark     String?
-  enabled    Boolean? @default(true)
-  breadcrumb Boolean? @default(false)
-  ignore     Boolean? @default(false)
-
-  roles MenusOnRoles[]
+  enabled    Boolean?       @default(true)
+  breadcrumb Boolean?       @default(false)
+  ignore     Boolean?       @default(false)
+  roles      MenusOnRoles[]
 }
 
 model Role {
@@ -55,4 +54,33 @@ model MenusOnRoles {
   menuId String
 
   @@id([roleId, menuId])
+}
+
+model Specifications {
+  id           String   @id @default(cuid())
+  title        String
+  // 款号
+  styleNumber  String?
+  // 圈号
+  circleNumber String?
+  // 件重
+  singleWeight String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+model Customer {
+  id           String   @id @default(cuid())
+  // 客户编号
+  customerCode       String?
+  // 款号
+  styleNumber  String?
+  // 圈号
+  circleNumber String?
+  // 件重
+  singleWeight String?
+
+  categoryNumber     String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

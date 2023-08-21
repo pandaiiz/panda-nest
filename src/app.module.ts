@@ -8,6 +8,8 @@ import { UsersModule } from './users/users.module';
 import { MenuModule } from './menu/menu.module';
 import { RoleModule } from './role/role.module';
 import config from './common/configs/config';
+import { DictionaryModule } from './dictionary/dictionary.module';
+import { ModulesModule } from './modules/modules.module';
 
 @Module({
   imports: [
@@ -24,11 +26,12 @@ import config from './common/configs/config';
         ],
       },
     }),
-
     AuthModule,
     UsersModule,
     MenuModule,
     RoleModule,
+    DictionaryModule,
+    ModulesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

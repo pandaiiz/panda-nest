@@ -75,7 +75,10 @@ export class AuthService {
 
   async validateUser(userId: string): Promise<any> {
     const user = await this.prisma.user.findUnique({
-      where: { id: userId },
+      where: {
+        id: userId,
+        // role: { menus: { some: { menu: { enabled: false } } } },
+      },
       include: {
         role: {
           include: {
@@ -88,7 +91,10 @@ export class AuthService {
         },
       },
     });
-    const menus = user.role.menus.map((item) => item.menu);
+    let menus = [];
+    user.role.menus.forEach((item) => {
+      if (item.menu.enabled) menus = [...menus, item.menu];
+    });
     return { ...user, menus: formatToTree(menus) };
   }
 
