@@ -55,17 +55,17 @@ export async function generateMenu(superRole) {
         {
           parentId: informationMenu.id,
           title: '客户管理',
-          key: 'setting/customer',
+          key: 'information/customer',
         },
         {
           parentId: informationMenu.id,
           title: '员工管理',
-          key: 'setting/employee',
+          key: 'information/employee',
         },
         {
           parentId: informationMenu.id,
           title: '款式管理',
-          key: 'setting/specifications',
+          key: 'information/specifications',
         },
       ],
     });
