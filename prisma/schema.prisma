@@ -71,20 +71,33 @@ model Specifications {
 }
 
 model Customer {
-  id           String  @id @default(cuid())
+  id            String   @id @default(cuid())
+  // 客户名称
+  name          String?
+  // 客户联系方式
+  telephone     String?
+  // 联系人名字
+  contactsName  String?
+  // 联系人电话
+  contactsPhone String?
   // 客户编号
-  customerCode String?
-  // 款号
-  styleNumber  String?
-  // 圈号
-  circleNumber String?
-  // 件重
-  singleWeight String?
+  customerCode  String?  @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
 
-  categoryNumber String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Employee {
+  id           String   @id @default(cuid())
+  name         String?
+  age          Int?
+  employeeCode String?  @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  sex          String?
+  // 状态 启用停用
+  enabled      Boolean? @default(true)
+  // 备注
+  remark       String?
 }
 
 model Dictionary {

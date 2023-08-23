@@ -1,7 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSpecificationDto } from './dto/create-specification.dto';
-import { UpdateSpecificationDto } from './dto/update-specification.dto';
-import { RoleService } from '../../../role/role.service';
 import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()

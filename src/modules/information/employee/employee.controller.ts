@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -17,18 +26,26 @@ export class EmployeeController {
     return this.employeeService.findAll();
   }
 
+  @Get('paging')
+  async getListByPaging(@Query() query) {
+    return this.employeeService.getListByPaging(query);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.employeeService.findOne(+id);
+    return this.employeeService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto) {
-    return this.employeeService.update(+id, updateEmployeeDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateEmployeeDto: UpdateEmployeeDto,
+  ) {
+    return this.employeeService.update(id, updateEmployeeDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.employeeService.remove(+id);
+    return this.employeeService.remove(id);
   }
 }
