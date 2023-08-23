@@ -58,13 +58,14 @@ model MenusOnRoles {
 
 model Specifications {
   id           String   @id @default(cuid())
-  title        String
   // 款号
   styleNumber  String?
   // 圈号
-  circleNumber String?
+  circleNumber Json?
   // 件重
-  singleWeight String?
+  singleWeight Json?
+  // 品类
+  category     Json?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

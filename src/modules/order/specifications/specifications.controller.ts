@@ -1,6 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { SpecificationsService } from './specifications.service';
-import { CreateSpecificationDto } from './dto/create-specification.dto';
 import { UpdateSpecificationDto } from './dto/update-specification.dto';
 
 @Controller('specifications')
@@ -8,7 +16,7 @@ export class SpecificationsController {
   constructor(private readonly specificationsService: SpecificationsService) {}
 
   @Post()
-  create(@Body() createSpecificationDto: CreateSpecificationDto) {
+  create(@Body() createSpecificationDto: any) {
     return this.specificationsService.create(createSpecificationDto);
   }
 
@@ -17,18 +25,26 @@ export class SpecificationsController {
     return this.specificationsService.findAll();
   }
 
+  @Get('paging')
+  async getSpecificationsByPaging(@Query() query) {
+    return this.specificationsService.getSpecificationsByPaging(query);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.specificationsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSpecificationDto: UpdateSpecificationDto) {
-    return this.specificationsService.update(+id, updateSpecificationDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateSpecificationDto: UpdateSpecificationDto,
+  ) {
+    return this.specificationsService.update(id, updateSpecificationDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.specificationsService.remove(+id);
+    return this.specificationsService.remove(id);
   }
 }
