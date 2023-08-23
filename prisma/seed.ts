@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { generateMenu } from './generateMenu';
 
 const prisma = new PrismaClient();
 
@@ -45,41 +46,7 @@ async function main() {
       },
     });
 
-    const settingMenu = await prisma.menu.create({
-      data: {
-        title: '系统设置',
-        key: 'setting',
-      },
-    });
-
-    const menuList = await prisma.menu.createMany({
-      data: [
-        {
-          parentId: settingMenu.id,
-          title: '菜单管理',
-          key: 'setting/menu',
-        },
-        {
-          parentId: settingMenu.id,
-          title: '角色管理',
-          key: 'setting/role',
-        },
-        {
-          parentId: settingMenu.id,
-          title: '用户管理',
-          key: 'setting/user',
-        },
-      ],
-    });
-
-    const menuList2 = await prisma.menu.findMany();
-
-    await prisma.menusOnRoles.createMany({
-      data: menuList2.map((item) => ({
-        menuId: item.id,
-        roleId: superRole.id,
-      })),
-    });
+    await generateMenu(superRole);
   } catch (e) {
     console.log(e);
   }

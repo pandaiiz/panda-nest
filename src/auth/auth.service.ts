@@ -83,6 +83,11 @@ export class AuthService {
         role: {
           include: {
             menus: {
+              where: {
+                menu: {
+                  enabled: true,
+                },
+              },
               include: {
                 menu: true,
               },
@@ -91,10 +96,7 @@ export class AuthService {
         },
       },
     });
-    let menus = [];
-    user.role.menus.forEach((item) => {
-      if (item.menu.enabled) menus = [...menus, item.menu];
-    });
+    const menus = user.role.menus.map((item) => item.menu);
     return { ...user, menus: formatToTree(menus) };
   }
 

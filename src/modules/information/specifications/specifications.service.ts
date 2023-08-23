@@ -17,16 +17,11 @@ export class SpecificationsService {
   async getSpecificationsByPaging(query: {
     pageSize?: 10;
     current?: 1;
-    styleNumber: any;
+    styleCode: any;
   }) {
-    const { pageSize = 10, current = 1, styleNumber } = query;
+    const { pageSize = 10, current = 1 } = query;
     const [specifications, count] = await this.prisma.$transaction([
       this.prisma.specifications.findMany({
-        where: {
-          styleNumber: {
-            contains: styleNumber,
-          },
-        },
         skip: +pageSize * (+current - 1),
         take: +pageSize,
       }),
@@ -40,8 +35,8 @@ export class SpecificationsService {
     };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} specification`;
+  findOne(id: string) {
+    return this.prisma.specifications.findUnique({ where: { id } });
   }
 
   update(id: string, updateSpecificationDto: any) {

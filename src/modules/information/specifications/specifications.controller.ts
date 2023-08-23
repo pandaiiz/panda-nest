@@ -32,7 +32,7 @@ export class SpecificationsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.specificationsService.findOne(+id);
+    return this.specificationsService.findOne(id);
   }
 
   @Patch(':id')

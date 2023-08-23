@@ -57,17 +57,24 @@ model MenusOnRoles {
 }
 
 model Specifications {
-  id           String   @id @default(cuid())
+  id             String   @id @default(cuid())
   // 款号
-  styleNumber  String?
+  styleCode      String?
+  // 款号
+  styleCodeId    String?
   // 圈号
-  circleNumber Json?
+  circleNumber   String?
+  circleNumberId String?
   // 件重
-  singleWeight Json?
+  singleWeight   String?
+  singleWeightId String?
   // 品类
-  category     Json?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  category       String?
+  categoryId     String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  orderDetails OrderDetail[]
 }
 
 model Customer {
@@ -84,6 +91,8 @@ model Customer {
   customerCode  String?  @unique
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  orders Order[]
 }
 
 model Employee {
@@ -135,4 +144,33 @@ model DictionaryItem {
   sort      Int?
   // 备注
   remark    String?
+}
+
+model Order {
+  id           String        @id @default(cuid())
+  orderNumber  String        @unique
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  // 其他订单信息
+  orderDetails OrderDetail[]
+  customer     Customer?     @relation(fields: [customerId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  customerId   String?
+}
+
+model OrderDetail {
+  id         String  @id @default(cuid())
+  // 件数
+  quantity   Int
+  // 单位
+  unit       String
+  unitPrice  Decimal
+  totalPrice Decimal
+
+  order   Order?  @relation(fields: [orderId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  orderId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  specifications Specifications[]
 }

@@ -14,13 +14,21 @@ export class CustomerService {
     return this.prisma.customer.findMany();
   }
 
-  async getListByPaging(query: { pageSize?: 10; current?: 1; name: any }) {
-    const { pageSize = 10, current = 1, name } = query;
+  async getListByPaging(query: {
+    pageSize?: 10;
+    current?: 1;
+    name: any;
+    customerCode: any;
+  }) {
+    const { pageSize = 10, current = 1, name, customerCode } = query;
     const [employees, count] = await this.prisma.$transaction([
       this.prisma.customer.findMany({
         where: {
           name: {
             contains: name,
+          },
+          customerCode: {
+            contains: customerCode,
           },
         },
         skip: +pageSize * (+current - 1),
