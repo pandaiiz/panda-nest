@@ -28,6 +28,11 @@ export async function generateMenu(superRole) {
           title: '用户管理',
           key: 'setting/user',
         },
+        {
+          parentId: settingMenu.id,
+          title: '字典管理',
+          key: 'setting/dictionary',
+        },
       ],
     });
 

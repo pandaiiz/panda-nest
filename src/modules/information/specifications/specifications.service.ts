@@ -14,11 +14,7 @@ export class SpecificationsService {
     return `This action returns all specifications`;
   }
 
-  async getSpecificationsByPaging(query: {
-    pageSize?: 10;
-    current?: 1;
-    styleCode: any;
-  }) {
+  async getListByPaging(query: { pageSize?: 10; current?: 1; styleCode: any }) {
     const { pageSize = 10, current = 1 } = query;
     const [specifications, count] = await this.prisma.$transaction([
       this.prisma.specifications.findMany({

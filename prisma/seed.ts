@@ -30,6 +30,76 @@ async function main() {
         },
       ],
     });
+
+    const dictionaryList = await prisma.dictionary.findMany({
+      where: {
+        OR: [{ key: 'SINGLE_WEIGHRT' }, { key: 'CATEGORY' }, { key: 'CIRCLE' }],
+      },
+    });
+
+    const dictionaryItemList = [];
+    dictionaryList.forEach((item) => {
+      if (item.key === 'SINGLE_WEIGHRT') {
+        dictionaryItemList.push(
+          {
+            dictId: item.id,
+            itemKey: 'sw_12',
+            title: '单重12',
+          },
+          {
+            dictId: item.id,
+            itemKey: 'sw_14',
+            title: '单重14',
+          },
+          {
+            dictId: item.id,
+            itemKey: 'sw_16',
+            title: '单重16',
+          },
+        );
+      }
+      if (item.key === 'CATEGORY') {
+        dictionaryItemList.push(
+          {
+            dictId: item.id,
+            itemKey: '4n_z',
+            title: '4N直',
+          },
+          {
+            dictId: item.id,
+            itemKey: '5n_f',
+            title: '5N方',
+          },
+          {
+            dictId: item.id,
+            itemKey: '6n_y',
+            title: '6N圆',
+          },
+        );
+      }
+      if (item.key === 'CIRCLE') {
+        dictionaryItemList.push(
+          {
+            dictId: item.id,
+            itemKey: 'qh_16',
+            title: '圈号16',
+          },
+          {
+            dictId: item.id,
+            itemKey: 'qh_12',
+            title: '圈号12',
+          },
+          {
+            dictId: item.id,
+            itemKey: 'qh_14',
+            title: '圈号14',
+          },
+        );
+      }
+    });
+
+    await prisma.dictionaryItem.createMany({ data: dictionaryItemList });
+
     const superRole = await prisma.role.create({
       data: {
         title: '超级管理员',

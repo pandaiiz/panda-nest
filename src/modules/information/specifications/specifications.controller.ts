@@ -26,8 +26,8 @@ export class SpecificationsController {
   }
 
   @Get('paging')
-  async getSpecificationsByPaging(@Query() query) {
-    return this.specificationsService.getSpecificationsByPaging(query);
+  async getListByPaging(@Query() query) {
+    return this.specificationsService.getListByPaging(query);
   }
 
   @Get(':id')
