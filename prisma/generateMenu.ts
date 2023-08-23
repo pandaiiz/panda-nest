@@ -32,7 +32,9 @@ export async function generateMenu(superRole) {
     });
 
     const settingMenuList2 = await prisma.menu.findMany({
-      where: { parentId: settingMenu.id },
+      where: {
+        OR: [{ parentId: settingMenu.id }, { id: settingMenu.id }],
+      },
     });
 
     await prisma.menusOnRoles.createMany({
@@ -69,7 +71,9 @@ export async function generateMenu(superRole) {
     });
 
     const informationMenuList2 = await prisma.menu.findMany({
-      where: { parentId: informationMenu.id },
+      where: {
+        OR: [{ parentId: informationMenu.id }, { id: informationMenu.id }],
+      },
     });
 
     await prisma.menusOnRoles.createMany({
@@ -101,7 +105,9 @@ export async function generateMenu(superRole) {
     });
 
     const orderMenuList2 = await prisma.menu.findMany({
-      where: { parentId: orderMenu.id },
+      where: {
+        OR: [{ parentId: orderMenu.id }, { id: orderMenu.id }],
+      },
     });
 
     await prisma.menusOnRoles.createMany({
