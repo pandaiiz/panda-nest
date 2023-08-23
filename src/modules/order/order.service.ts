@@ -15,15 +15,19 @@ export class OrderService {
   }
   async getListByPaging(query: { pageSize?: 10; current?: 1 }) {
     const { pageSize = 10, current = 1 } = query;
-    const [specifications, count] = await this.prisma.$transaction([
-      this.prisma.specifications.findMany({
+    const [orders, count] = await this.prisma.$transaction([
+      this.prisma.order.findMany({
         skip: +pageSize * (+current - 1),
         take: +pageSize,
+        include: {
+          orderDetails: true,
+          customer: true,
+        },
       }),
-      this.prisma.specifications.count(),
+      this.prisma.order.count(),
     ]);
     return {
-      data: specifications,
+      data: orders,
       pagination: {
         total: count,
       },
