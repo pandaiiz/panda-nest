@@ -25,13 +25,18 @@ export class RoleService {
               enabled: true,
             },
           },
+          include: {
+            menu: true,
+          },
         },
       },
     });
   }
 
   findOne(id: string) {
-    return this.prisma.role.findUnique({ where: { id } });
+    return this.prisma.role.findUnique({
+      where: { id },
+    });
   }
 
   async update(id: string, updateRoleDto: UpdateRoleDto) {

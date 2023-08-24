@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   await prisma.dictionary.deleteMany();
+  await prisma.dictionaryItem.deleteMany();
   await prisma.user.deleteMany();
   await prisma.menusOnRoles.deleteMany();
   await prisma.role.deleteMany();
