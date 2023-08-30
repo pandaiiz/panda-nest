@@ -56,6 +56,14 @@ model MenusOnRoles {
   @@id([roleId, menuId])
 }
 
+model Pictures {
+  id        String   @id @default(cuid())
+  src       String
+  sign      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Specifications {
   id             String   @id @default(cuid())
   // 款号
@@ -71,10 +79,11 @@ model Specifications {
   // 品类
   category       String?
   categoryId     String?
+  pictures       Json?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  orderDetails OrderDetail[]
+  // orderDetails OrderDetail[]
 }
 
 model Customer {
@@ -162,7 +171,7 @@ model OrderDetail {
   // 件数
   quantity   Int
   // 单位
-  unit       String
+  // unit       String
   unitPrice  Decimal
   totalPrice Decimal
 
@@ -172,5 +181,5 @@ model OrderDetail {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  specifications Specifications[]
+  // specifications Specifications[]
 }

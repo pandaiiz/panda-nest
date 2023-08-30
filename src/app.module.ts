@@ -10,6 +10,7 @@ import { RoleModule } from './role/role.module';
 import config from './common/configs/config';
 import { DictionaryModule } from './dictionary/dictionary.module';
 import { ModulesModule } from './modules/modules.module';
+import { PictureModule } from './picture/picture.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ModulesModule } from './modules/modules.module';
     RoleModule,
     DictionaryModule,
     ModulesModule,
+    PictureModule,
   ],
   controllers: [AppController],
   providers: [AppService],

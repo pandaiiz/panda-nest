@@ -47,6 +47,17 @@ CREATE TABLE "MenusOnRoles" (
 );
 
 -- CreateTable
+CREATE TABLE "Pictures" (
+    "id" TEXT NOT NULL,
+    "src" TEXT NOT NULL,
+    "sign" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Pictures_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Specifications" (
     "id" TEXT NOT NULL,
     "styleCode" TEXT,
@@ -57,6 +68,7 @@ CREATE TABLE "Specifications" (
     "singleWeightId" TEXT,
     "category" TEXT,
     "categoryId" TEXT,
+    "pictures" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -160,6 +172,9 @@ CREATE UNIQUE INDEX "Menu_key_key" ON "Menu"("key");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Role_key_key" ON "Role"("key");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Pictures_sign_key" ON "Pictures"("sign");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Customer_customerCode_key" ON "Customer"("customerCode");

@@ -48,6 +48,14 @@ Table MenusOnRoles {
   }
 }
 
+Table Pictures {
+  id String [pk]
+  src String [not null]
+  sign String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
 Table Specifications {
   id String [pk]
   styleCode String
@@ -58,9 +66,9 @@ Table Specifications {
   singleWeightId String
   category String
   categoryId String
+  pictures Json
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  orderDetails OrderDetail [not null]
 }
 
 Table Customer {
@@ -125,19 +133,12 @@ Table Order {
 Table OrderDetail {
   id String [pk]
   quantity Int [not null]
-  unit String [not null]
   unitPrice Decimal [not null]
   totalPrice Decimal [not null]
   order Order
   orderId String
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  specifications Specifications [not null]
-}
-
-Table OrderDetailToSpecifications {
-  orderdetailsId String [ref: > OrderDetail.id]
-  specificationsId String [ref: > Specifications.id]
 }
 
 Ref: User.roleId > Role.id [delete: Set Null]

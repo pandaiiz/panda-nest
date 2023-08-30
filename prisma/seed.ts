@@ -19,7 +19,7 @@ async function main() {
       data: [
         {
           title: '件重',
-          key: 'SINGLE_WEIGHRT',
+          key: 'SINGLE_WEIGHT',
         },
         {
           title: '品名',
@@ -34,13 +34,13 @@ async function main() {
 
     const dictionaryList = await prisma.dictionary.findMany({
       where: {
-        OR: [{ key: 'SINGLE_WEIGHRT' }, { key: 'CATEGORY' }, { key: 'CIRCLE' }],
+        OR: [{ key: 'SINGLE_WEIGHT' }, { key: 'CATEGORY' }, { key: 'CIRCLE' }],
       },
     });
 
     const dictionaryItemList = [];
     dictionaryList.forEach((item) => {
-      if (item.key === 'SINGLE_WEIGHRT') {
+      if (item.key === 'SINGLE_WEIGHT') {
         dictionaryItemList.push(
           {
             dictId: item.id,
