@@ -34,6 +34,10 @@ export class SpecificationsController {
   findOne(@Param('id') id: string) {
     return this.specificationsService.findOne(id);
   }
+  @Get('code/:code')
+  findOneByCode(@Param('styleCode') code: string) {
+    return this.specificationsService.findOneByCode(code);
+  }
 
   @Patch(':id')
   update(

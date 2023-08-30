@@ -170,6 +170,8 @@ model OrderDetail {
   id         String  @id @default(cuid())
   // 件数
   quantity   Int
+  // 件数
+  circle   Int
   // 单位
   // unit       String
   unitPrice  Decimal

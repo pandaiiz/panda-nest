@@ -34,6 +34,9 @@ export class SpecificationsService {
   findOne(id: string) {
     return this.prisma.specifications.findUnique({ where: { id } });
   }
+  findOneByCode(styleCode: string) {
+    return this.prisma.specifications.findMany({ where: { styleCode } });
+  }
 
   update(id: string, updateSpecificationDto: any) {
     return this.prisma.specifications.update({

@@ -18,23 +18,15 @@ async function main() {
     const dictionary = await prisma.dictionary.createMany({
       data: [
         {
-          title: '件重',
-          key: 'SINGLE_WEIGHT',
-        },
-        {
           title: '品名',
           key: 'CATEGORY',
-        },
-        {
-          title: '圈号',
-          key: 'CIRCLE',
         },
       ],
     });
 
     const dictionaryList = await prisma.dictionary.findMany({
       where: {
-        OR: [{ key: 'SINGLE_WEIGHT' }, { key: 'CATEGORY' }, { key: 'CIRCLE' }],
+        OR: [{ key: 'CATEGORY' }],
       },
     });
 

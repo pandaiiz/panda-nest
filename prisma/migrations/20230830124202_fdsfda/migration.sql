@@ -148,7 +148,6 @@ CREATE TABLE "Order" (
 CREATE TABLE "OrderDetail" (
     "id" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
-    "unit" TEXT NOT NULL,
     "unitPrice" DECIMAL(65,30) NOT NULL,
     "totalPrice" DECIMAL(65,30) NOT NULL,
     "orderId" TEXT,
@@ -156,12 +155,6 @@ CREATE TABLE "OrderDetail" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "OrderDetail_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "_OrderDetailToSpecifications" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL
 );
 
 -- CreateIndex
@@ -191,12 +184,6 @@ CREATE UNIQUE INDEX "DictionaryItem_itemKey_key" ON "DictionaryItem"("itemKey");
 -- CreateIndex
 CREATE UNIQUE INDEX "Order_orderNumber_key" ON "Order"("orderNumber");
 
--- CreateIndex
-CREATE UNIQUE INDEX "_OrderDetailToSpecifications_AB_unique" ON "_OrderDetailToSpecifications"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_OrderDetailToSpecifications_B_index" ON "_OrderDetailToSpecifications"("B");
-
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE SET NULL ON UPDATE SET NULL;
 
@@ -214,9 +201,3 @@ ALTER TABLE "Order" ADD CONSTRAINT "Order_customerId_fkey" FOREIGN KEY ("custome
 
 -- AddForeignKey
 ALTER TABLE "OrderDetail" ADD CONSTRAINT "OrderDetail_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE SET NULL ON UPDATE SET NULL;
-
--- AddForeignKey
-ALTER TABLE "_OrderDetailToSpecifications" ADD CONSTRAINT "_OrderDetailToSpecifications_A_fkey" FOREIGN KEY ("A") REFERENCES "OrderDetail"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_OrderDetailToSpecifications" ADD CONSTRAINT "_OrderDetailToSpecifications_B_fkey" FOREIGN KEY ("B") REFERENCES "Specifications"("id") ON DELETE CASCADE ON UPDATE CASCADE;
