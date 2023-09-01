@@ -59,7 +59,6 @@ Table Pictures {
 Table Specifications {
   id String [pk]
   styleCode String
-  styleCodeId String
   circleNumber String
   circleNumberId String
   singleWeight String
@@ -122,9 +121,11 @@ Table DictionaryItem {
 
 Table Order {
   id String [pk]
-  orderNumber String [unique, not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  orderNumber String [unique, not null]
+  characters String
+  orderDate DateTime
   orderDetails OrderDetail [not null]
   customer Customer
   customerId String
@@ -132,9 +133,18 @@ Table Order {
 
 Table OrderDetail {
   id String [pk]
-  quantity Int [not null]
-  unitPrice Decimal [not null]
-  totalPrice Decimal [not null]
+  quantity Int
+  circle Decimal
+  singleWeight Decimal
+  number Int
+  unitPrice Decimal
+  totalPrice Decimal
+  styleCode String
+  transferNo String
+  categoryId String
+  categoryTitle String
+  categoryKey String
+  productionStatus Int [not null, default: 0]
   order Order
   orderId String
   createdAt DateTime [default: `now()`, not null]

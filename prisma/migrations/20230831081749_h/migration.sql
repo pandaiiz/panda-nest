@@ -61,7 +61,6 @@ CREATE TABLE "Pictures" (
 CREATE TABLE "Specifications" (
     "id" TEXT NOT NULL,
     "styleCode" TEXT,
-    "styleCodeId" TEXT,
     "circleNumber" TEXT,
     "circleNumberId" TEXT,
     "singleWeight" TEXT,
@@ -136,9 +135,11 @@ CREATE TABLE "DictionaryItem" (
 -- CreateTable
 CREATE TABLE "Order" (
     "id" TEXT NOT NULL,
-    "orderNumber" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "orderNumber" TEXT NOT NULL,
+    "characters" TEXT,
+    "orderDate" TIMESTAMP(3),
     "customerId" TEXT,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
@@ -147,9 +148,18 @@ CREATE TABLE "Order" (
 -- CreateTable
 CREATE TABLE "OrderDetail" (
     "id" TEXT NOT NULL,
-    "quantity" INTEGER NOT NULL,
-    "unitPrice" DECIMAL(65,30) NOT NULL,
-    "totalPrice" DECIMAL(65,30) NOT NULL,
+    "quantity" INTEGER,
+    "circle" DECIMAL(65,30),
+    "singleWeight" DECIMAL(65,30),
+    "number" INTEGER,
+    "unitPrice" DECIMAL(65,30),
+    "totalPrice" DECIMAL(65,30),
+    "styleCode" TEXT,
+    "transferNo" TEXT,
+    "categoryId" TEXT,
+    "categoryTitle" TEXT,
+    "categoryKey" TEXT,
+    "productionStatus" INTEGER NOT NULL DEFAULT 0,
     "orderId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

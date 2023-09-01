@@ -25,6 +25,10 @@ export class OrderController {
   findAll() {
     return this.orderService.findAll();
   }
+  @Get('details')
+  findAllOrderDetails(@Query() query) {
+    return this.orderService.findAllOrderDetails(query);
+  }
 
   @Get('paging')
   async getListByPaging(@Query() query) {
@@ -44,5 +48,9 @@ export class OrderController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.orderService.remove(id);
+  }
+  @Delete('/detail/:id')
+  removeItem(@Param('id') id: string) {
+    return this.orderService.removeItem(id);
   }
 }

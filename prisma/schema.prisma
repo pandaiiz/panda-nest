@@ -68,8 +68,6 @@ model Specifications {
   id             String   @id @default(cuid())
   // 款号
   styleCode      String?
-  // 款号
-  styleCodeId    String?
   // 圈号
   circleNumber   String?
   circleNumberId String?
@@ -82,8 +80,6 @@ model Specifications {
   pictures       Json?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-
-  // orderDetails OrderDetail[]
 }
 
 model Customer {
@@ -157,31 +153,52 @@ model DictionaryItem {
 
 model Order {
   id           String        @id @default(cuid())
-  orderNumber  String        @unique
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  // 其他订单信息
+  orderNumber  String        @unique
+  // 字印
+  characters   String?
+  // 订单日期
+  orderDate    DateTime?
+  // 订单详情
   orderDetails OrderDetail[]
   customer     Customer?     @relation(fields: [customerId], references: [id], onDelete: SetNull, onUpdate: SetNull)
   customerId   String?
+  // 备注
+  remark       String?
 }
 
 model OrderDetail {
-  id         String  @id @default(cuid())
+  id            String   @id @default(cuid())
   // 件数
-  quantity   Int
-  // 件数
-  circle   Int
-  // 单位
-  // unit       String
-  unitPrice  Decimal
-  totalPrice Decimal
+  quantity      Int?
+  // 圈号
+  circle        Decimal?
+  // 件重
+  singleWeight  Decimal?
+  // 单价
+  unitPrice     Decimal?
+  // 总价
+  totalPrice    Decimal?
+  // 款号
+  styleCode     String?
+  // 传递单号
+  transferNo    String?
+  // 品名
+  categoryId    String?
+  // 品名名称
+  categoryTitle String?
+  // 品名值
+  categoryKey   String?
+  // 备注
+  remark        String?
+
+  // 0未排产 1生产中 2已完成
+  productionStatus Int @default(0)
 
   order   Order?  @relation(fields: [orderId], references: [id], onDelete: SetNull, onUpdate: SetNull)
   orderId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  // specifications Specifications[]
 }

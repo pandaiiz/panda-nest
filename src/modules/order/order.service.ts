@@ -13,6 +13,17 @@ export class OrderService {
   findAll() {
     return this.prisma.order.findMany();
   }
+  findAllOrderDetails(query) {
+    return this.prisma.orderDetail.findMany({
+      include: {
+        order: {
+          include: {
+            customer: true,
+          },
+        },
+      },
+    });
+  }
   async getListByPaging(query: { pageSize?: 10; current?: 1 }) {
     const { pageSize = 10, current = 1 } = query;
     const [orders, count] = await this.prisma.$transaction([
@@ -38,10 +49,26 @@ export class OrderService {
   }
 
   update(id: string, updateOrderDto: UpdateOrderDto) {
-    return this.prisma.order.update({ where: { id }, data: updateOrderDto });
+    const { formData, detailData } = updateOrderDto;
+    const existId = detailData
+      .filter((detail) => detail.id)
+      .map((detail) => detail.id);
+    return this.prisma.order.update({
+      where: { id },
+      data: {
+        ...formData,
+        orderDetails: {
+          deleteMany: { id: { in: existId } },
+          createMany: { data: detailData },
+        },
+      },
+    });
   }
 
   remove(id: string) {
     return this.prisma.order.delete({ where: { id } });
+  }
+  removeItem(id: string) {
+    return this.prisma.orderDetail.delete({ where: { id } });
   }
 }
