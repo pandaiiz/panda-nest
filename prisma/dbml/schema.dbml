@@ -79,7 +79,6 @@ Table Customer {
   customerCode String [unique]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  orders Order [not null]
 }
 
 Table Employee {
@@ -126,17 +125,21 @@ Table Order {
   orderNumber String [unique, not null]
   characters String
   orderDate DateTime
-  orderDetails OrderDetail [not null]
-  customer Customer
   customerId String
+  customerCode String
+  customerName String
+  remark String
 }
 
 Table OrderDetail {
   id String [pk]
+  orderId String
+  customerId String
+  customerCode String
+  customerName String
   quantity Int
   circle Decimal
   singleWeight Decimal
-  number Int
   unitPrice Decimal
   totalPrice Decimal
   styleCode String
@@ -144,9 +147,8 @@ Table OrderDetail {
   categoryId String
   categoryTitle String
   categoryKey String
+  remark String
   productionStatus Int [not null, default: 0]
-  order Order
-  orderId String
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 }
@@ -158,7 +160,3 @@ Ref: MenusOnRoles.roleId > Role.id
 Ref: MenusOnRoles.menuId > Menu.id
 
 Ref: DictionaryItem.dictId > Dictionary.id [delete: Set Null]
-
-Ref: Order.customerId > Customer.id [delete: Set Null]
-
-Ref: OrderDetail.orderId > Order.id [delete: Set Null]

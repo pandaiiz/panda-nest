@@ -141,6 +141,9 @@ CREATE TABLE "Order" (
     "characters" TEXT,
     "orderDate" TIMESTAMP(3),
     "customerId" TEXT,
+    "customerCode" TEXT,
+    "customerName" TEXT,
+    "remark" TEXT,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -148,10 +151,13 @@ CREATE TABLE "Order" (
 -- CreateTable
 CREATE TABLE "OrderDetail" (
     "id" TEXT NOT NULL,
+    "orderId" TEXT,
+    "customerId" TEXT,
+    "customerCode" TEXT,
+    "customerName" TEXT,
     "quantity" INTEGER,
     "circle" DECIMAL(65,30),
     "singleWeight" DECIMAL(65,30),
-    "number" INTEGER,
     "unitPrice" DECIMAL(65,30),
     "totalPrice" DECIMAL(65,30),
     "styleCode" TEXT,
@@ -159,8 +165,8 @@ CREATE TABLE "OrderDetail" (
     "categoryId" TEXT,
     "categoryTitle" TEXT,
     "categoryKey" TEXT,
+    "remark" TEXT,
     "productionStatus" INTEGER NOT NULL DEFAULT 0,
-    "orderId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -205,9 +211,3 @@ ALTER TABLE "MenusOnRoles" ADD CONSTRAINT "MenusOnRoles_menuId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "DictionaryItem" ADD CONSTRAINT "DictionaryItem_dictId_fkey" FOREIGN KEY ("dictId") REFERENCES "Dictionary"("id") ON DELETE SET NULL ON UPDATE SET NULL;
-
--- AddForeignKey
-ALTER TABLE "Order" ADD CONSTRAINT "Order_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "Customer"("id") ON DELETE SET NULL ON UPDATE SET NULL;
-
--- AddForeignKey
-ALTER TABLE "OrderDetail" ADD CONSTRAINT "OrderDetail_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE SET NULL ON UPDATE SET NULL;

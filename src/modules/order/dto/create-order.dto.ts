@@ -1,4 +1,4 @@
 export class CreateOrderDto {
-  formData: any;
-  detailData: any[];
+  orderData: any;
+  orderDetailData: any[];
 }

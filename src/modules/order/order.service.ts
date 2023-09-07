@@ -6,23 +6,85 @@ import { PrismaService } from 'nestjs-prisma';
 @Injectable()
 export class OrderService {
   constructor(private prisma: PrismaService) {}
-  create(createOrderDto: any) {
-    return this.prisma.order.create({ data: createOrderDto });
+  async create(createOrderDto: CreateOrderDto) {
+    try {
+      const { orderData, orderDetailData } = createOrderDto;
+
+      const customer = await this.prisma.customer.findUnique({
+        where: { id: orderData.customerId },
+      });
+      orderData.customerCode = customer.customerCode;
+      orderData.customerName = customer.name;
+
+      const createOrder = await this.prisma.order.create({ data: orderData });
+
+      orderDetailData?.forEach((item) => {
+        item.orderId = createOrder.id;
+        item.customerId = customer.id;
+        item.customerCode = customer.customerCode;
+        item.customerName = customer.name;
+      });
+      await this.prisma.orderDetail.createMany({
+        data: orderDetailData,
+      });
+      return { success: true, msg: '创建成功！' };
+    } catch (error) {
+      return { success: false, msg: '创建失败！', result: error };
+    }
   }
 
+  async update(id: string, updateOrderDto: UpdateOrderDto) {
+    try {
+      const { orderData, orderDetailData } = updateOrderDto;
+
+      const customer = await this.prisma.customer.findUnique({
+        where: { id: orderData.customerId },
+      });
+      orderData.customerCode = customer.customerCode;
+      orderData.customerName = customer.name;
+
+      const createOrder = await this.prisma.order.update({
+        where: {
+          id,
+        },
+        data: orderData,
+      });
+
+      const transaction = orderDetailData.map((item) => {
+        item.orderId = createOrder.id;
+        item.customerId = customer.id;
+        item.customerCode = customer.customerCode;
+        item.customerName = customer.name;
+        if (item.id) {
+          return this.prisma.orderDetail.update({
+            where: { id: item.id },
+            data: item,
+          });
+        } else {
+          return this.prisma.orderDetail.create({
+            data: item,
+          });
+        }
+      });
+      await this.prisma.$transaction(transaction);
+      return { success: true, msg: '更新成功！' };
+    } catch (error) {
+      return {
+        success: false,
+        msg: '更新失败！',
+        result: error,
+      };
+    }
+  }
+
+  findOrderDetailsById(id: string) {
+    return this.prisma.orderDetail.findMany({ where: { orderId: id } });
+  }
   findAll() {
     return this.prisma.order.findMany();
   }
-  findAllOrderDetails(query) {
-    return this.prisma.orderDetail.findMany({
-      include: {
-        order: {
-          include: {
-            customer: true,
-          },
-        },
-      },
-    });
+  findAllOrderDetails() {
+    return this.prisma.orderDetail.findMany();
   }
   async getListByPaging(query: { pageSize?: 10; current?: 1 }) {
     const { pageSize = 10, current = 1 } = query;
@@ -30,10 +92,6 @@ export class OrderService {
       this.prisma.order.findMany({
         skip: +pageSize * (+current - 1),
         take: +pageSize,
-        include: {
-          orderDetails: true,
-          customer: true,
-        },
       }),
       this.prisma.order.count(),
     ]);
@@ -46,23 +104,6 @@ export class OrderService {
   }
   findOne(id: string) {
     return this.prisma.order.findUnique({ where: { id } });
-  }
-
-  update(id: string, updateOrderDto: UpdateOrderDto) {
-    const { formData, detailData } = updateOrderDto;
-    const existId = detailData
-      .filter((detail) => detail.id)
-      .map((detail) => detail.id);
-    return this.prisma.order.update({
-      where: { id },
-      data: {
-        ...formData,
-        orderDetails: {
-          deleteMany: { id: { in: existId } },
-          createMany: { data: detailData },
-        },
-      },
-    });
   }
 
   remove(id: string) {
