@@ -93,6 +93,35 @@ Table Employee {
   remark String
 }
 
+Table Transfer {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  transferCode String [unique]
+  orderId String
+  customerCode String
+  customerName String
+  categoryId String
+  categoryTitle String
+  circle String
+  singleWeight String
+  styleCode String
+  remark String
+  transferItems TransferItem [not null]
+}
+
+Table TransferItem {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  transferCode String [unique]
+  orderId String
+  orderItemId String
+  remark String
+  transfer Transfer
+  transferId Int
+}
+
 Table Dictionary {
   id String [pk]
   title String
@@ -123,7 +152,8 @@ Table Order {
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   orderNumber String [unique, not null]
-  characters String
+  charactersId String
+  charactersTitle String
   orderDate DateTime
   customerId String
   customerCode String
@@ -138,7 +168,7 @@ Table OrderDetail {
   customerCode String
   customerName String
   quantity Int
-  circle Decimal
+  circle String
   singleWeight Decimal
   unitPrice Decimal
   totalPrice Decimal
@@ -158,5 +188,7 @@ Ref: User.roleId > Role.id [delete: Set Null]
 Ref: MenusOnRoles.roleId > Role.id
 
 Ref: MenusOnRoles.menuId > Menu.id
+
+Ref: TransferItem.transferId > Transfer.id [delete: Set Null]
 
 Ref: DictionaryItem.dictId > Dictionary.id [delete: Set Null]

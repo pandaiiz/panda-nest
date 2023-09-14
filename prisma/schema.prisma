@@ -30,6 +30,7 @@ model Menu {
   updatedAt  DateTime       @updatedAt
   title      String
   key        String         @unique
+  sort       Int            @default(0)
   remark     String?
   enabled    Boolean?       @default(true)
   breadcrumb Boolean?       @default(false)
@@ -112,6 +113,38 @@ model Employee {
   remark       String?
 }
 
+model Transfer {
+  id            Int            @id @default(autoincrement())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  transferCode  String?        @unique
+  orderId       String?
+  customerCode  String?
+  customerName  String?
+  categoryId    String?
+  categoryTitle String?
+  // quantity      String?
+  circle        String?
+  singleWeight  String?
+  styleCode     String?
+  // 备注
+  remark        String?
+  transferItems TransferItem[]
+}
+
+model TransferItem {
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  transferCode String?   @unique
+  orderId      String?
+  orderItemId  String?
+  // 备注
+  remark       String?
+  transfer     Transfer? @relation(fields: [transferId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  transferId   Int?
+}
+
 model Dictionary {
   id      String   @id @default(cuid())
   // 字典名
@@ -150,19 +183,20 @@ model DictionaryItem {
 }
 
 model Order {
-  id           String    @id @default(cuid())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  orderNumber  String    @unique
+  id              String    @id @default(cuid())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  orderNumber     String    @unique
   // 字印
-  characters   String?
+  charactersId    String?
+  charactersTitle String?
   // 订单日期
-  orderDate    DateTime?
-  customerId   String?
-  customerCode String?
-  customerName String?
+  orderDate       DateTime?
+  customerId      String?
+  customerCode    String?
+  customerName    String?
   // 备注
-  remark       String?
+  remark          String?
 }
 
 model OrderDetail {
@@ -176,7 +210,7 @@ model OrderDetail {
   // 件数
   quantity      Int?
   // 圈号
-  circle        Decimal?
+  circle        String?
   // 件重
   singleWeight  Decimal?
   // 单价

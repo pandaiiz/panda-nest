@@ -18,6 +18,8 @@ export class OrderService {
 
       const createOrder = await this.prisma.order.create({ data: orderData });
 
+      console.log(createOrder);
+
       orderDetailData?.forEach((item) => {
         item.orderId = createOrder.id;
         item.customerId = customer.id;
