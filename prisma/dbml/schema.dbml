@@ -20,6 +20,7 @@ Table Menu {
   updatedAt DateTime [not null]
   title String [not null]
   key String [unique, not null]
+  sort Int [not null, default: 0]
   remark String
   enabled Boolean [default: true]
   breadcrumb Boolean [default: false]
