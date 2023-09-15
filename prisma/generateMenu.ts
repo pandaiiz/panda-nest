@@ -11,7 +11,7 @@ export async function generateMenu(superRole) {
         key: 'setting',
       },
     });
-    const settingMenuList = await prisma.menu.createMany({
+    await prisma.menu.createMany({
       data: [
         {
           parentId: settingMenu.id,
@@ -55,7 +55,7 @@ export async function generateMenu(superRole) {
         key: 'information',
       },
     });
-    const informationMenuList = await prisma.menu.createMany({
+    await prisma.menu.createMany({
       data: [
         {
           parentId: informationMenu.id,
@@ -64,13 +64,13 @@ export async function generateMenu(superRole) {
         },
         {
           parentId: informationMenu.id,
-          title: '员工管理',
-          key: 'information/employee',
+          title: '部门管理',
+          key: 'information/department',
         },
         {
           parentId: informationMenu.id,
           title: '款式管理',
-          key: 'information/specifications',
+          key: 'information/style',
         },
       ],
     });
@@ -94,7 +94,7 @@ export async function generateMenu(superRole) {
         key: 'order',
       },
     });
-    const orderMenuList = await prisma.menu.createMany({
+    await prisma.menu.createMany({
       data: [
         {
           parentId: orderMenu.id,

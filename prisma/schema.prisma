@@ -13,14 +13,25 @@ generator dbml {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  account   String   @unique
-  password  String
-  name      String?
-  role      Role?    @relation(fields: [roleId], references: [id], onDelete: SetNull, onUpdate: SetNull)
-  roleId    String?
+  id           String      @id @default(cuid())
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  account      String      @unique
+  password     String
+  name         String?
+  role         Role?       @relation(fields: [roleId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  roleId       String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId String?
+}
+
+model Department {
+  id            String         @id @default(cuid())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  name          String?
+  transferItems TransferItem[]
+  users         User[]
 }
 
 model Menu {
@@ -65,68 +76,6 @@ model Pictures {
   updatedAt DateTime @updatedAt
 }
 
-model Specification {
-  id           String   @id @default(cuid())
-  // 款号
-  styleCode    String?
-  // 圈号
-  circleNumber String?
-  // 件重
-  singleWeight String?
-  // 品类
-  category     String?
-  categoryName String?
-  src          String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
-model Customer {
-  id            String   @id @default(cuid())
-  // 客户名称
-  name          String?
-  // 客户联系方式
-  telephone     String?
-  // 联系人名字
-  contactsName  String?
-  // 联系人电话
-  contactsPhone String?
-  // 客户编号
-  customerCode  String?  @unique
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-}
-
-model Transfer {
-  id            Int            @id @default(autoincrement())
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  transferCode  String?        @unique
-  orderId       String?
-  category      String?
-  categoryName  String?
-  // quantity      String?
-  circle        String?
-  singleWeight  String?
-  styleCode     String?
-  // 备注
-  remark        String?
-  transferItems TransferItem[]
-}
-
-model TransferItem {
-  id           Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  transferCode String?   @unique
-  orderId      String?
-  orderItemId  String?
-  // 备注
-  remark       String?
-  transfer     Transfer? @relation(fields: [transferId], references: [id], onDelete: SetNull, onUpdate: SetNull)
-  transferId   Int?
-}
-
 model Dictionary {
   id      String   @id @default(cuid())
   // 字典名
@@ -164,57 +113,143 @@ model DictionaryItem {
   remark    String?
 }
 
-model Order {
-  id              String    @id @default(cuid())
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  orderNumber     String    @unique
-  // 字印
-  charactersId    String?
-  charactersTitle String?
-  // 订单日期
-  orderDate       DateTime?
-  customerId      String?
-  customerCode    String?
-  customerName    String?
-  // 备注
-  remark          String?
+model Style {
+  id           String   @id @default(cuid())
+  // 款号
+  styleCode    String?  @unique
+  // 圈号
+  circle       String?
+  // 件重
+  singleWeight String?
+  // 品类
+  category     String?
+  categoryName String?
+  src          String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orderDetails OrderDetail[]
+  transfers    Transfer[]
 }
 
-model OrderDetail {
+model Customer {
   id            String   @id @default(cuid())
-  // 订单id
-  orderId       String?
-  // 客户id
-  customerId    String?
-  customerCode  String?
-  customerName  String?
-  // 件数
-  quantity      Int?
-  // 圈号
-  circle        String?
-  // 件重
-  singleWeight  Decimal?
-  // 单价
-  unitPrice     Decimal?
-  // 总价
-  totalPrice    Decimal?
-  // 款号
-  styleCode     String?
-  // 传递单号
-  transferNo    String?
-  // 品名
-  categoryId    String?
-  // 品名名称
-  categoryTitle String?
-  // 品名值
-  categoryKey   String?
+  // 客户名称
+  name          String?
+  // 客户联系方式
+  telephone     String?
+  // 联系人名字
+  contactsName  String?
+  // 联系人电话
+  contactsPhone String?
+  // 客户编号
+  customerCode  String?  @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  orders Order[]
+}
+
+model Order {
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  orderNumber   String    @unique
+  // 订单日期
+  orderDate     DateTime?
+  // 字印
+  fontPrint     String?
+  fontPrintName String?
   // 备注
   remark        String?
 
-  // 0未排产 1生产中 2已完成
-  productionStatus Int @default(0)
+  transfers    Transfer[]
+  orderDetails OrderDetail[]
+
+  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  customerId String?
+}
+
+model OrderDetail {
+  id           String   @id @default(cuid())
+  // 品名
+  category     String?
+  // 品名名称
+  categoryName String?
+  // 圈号
+  circle       String?
+  // 件重
+  singleWeight Decimal?
+  // 数量
+  quantity     Int?
+  // 单价
+  unitPrice    Decimal?
+  // 总价
+  totalPrice   Decimal?
+  // 总重
+  totalWeight  Decimal?
+  // 备注
+  remark       String?
+
+  // 0未排产 1已排产
+  status Int @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // 订单
+  order   Order?  @relation(fields: [orderId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  orderId String?
+  // 款号
+  style   Style?  @relation(fields: [styleId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  styleId String?
+}
+
+model Transfer {
+  id            Int            @id @default(autoincrement())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  transferCode  String?        @unique
+  category      String?
+  categoryName  String?
+  quantity      Decimal?
+  circle        String?
+  singleWeight  String?
+  // 字印
+  fontPrint     String?
+  fontPrintName String?
+  // 状态 0未生产 1生产中，2完单
+  status        Int            @default(0)
+  // 备注
+  remark        String?
+  transferItems TransferItem[]
+  order         Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  orderId       String?
+  style         Style?         @relation(fields: [styleId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  styleId       String?
+}
+
+model TransferItem {
+  id              Int          @id @default(autoincrement())
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  // 出入库类型 0出 1入 
+  type            TransferType
+  // 重量
+  weight          Decimal?
+  // 件数
+  quantity        Decimal?
+  // 收发类型 半成品/良品/不良品等，通过枚举配置
+  productType     String?
+  productTypeName String?
+  remark          String?
+  department      Department?  @relation(fields: [departmentId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  departmentId    String?
+  transfer        Transfer?    @relation(fields: [transferId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  transferId      Int?
+}
+
+enum TransferType {
+  IN
+  OUT
 }

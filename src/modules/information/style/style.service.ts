@@ -2,29 +2,29 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
-export class SpecificationsService {
+export class StyleService {
   constructor(private prisma: PrismaService) {}
   create(createSpecificationDto: any) {
-    return this.prisma.specifications.create({
+    return this.prisma.style.create({
       data: createSpecificationDto,
     });
   }
 
   findAll() {
-    return `This action returns all specifications`;
+    return `This action returns all style`;
   }
 
   async getListByPaging(query: { pageSize?: 10; current?: 1; styleCode: any }) {
     const { pageSize = 10, current = 1 } = query;
-    const [specifications, count] = await this.prisma.$transaction([
-      this.prisma.specifications.findMany({
+    const [style, count] = await this.prisma.$transaction([
+      this.prisma.style.findMany({
         skip: +pageSize * (+current - 1),
         take: +pageSize,
       }),
-      this.prisma.specifications.count(),
+      this.prisma.style.count(),
     ]);
     return {
-      data: specifications,
+      data: style,
       pagination: {
         total: count,
       },
@@ -32,20 +32,20 @@ export class SpecificationsService {
   }
 
   findOne(id: string) {
-    return this.prisma.specifications.findUnique({ where: { id } });
+    return this.prisma.style.findUnique({ where: { id } });
   }
   findOneByCode(styleCode: string) {
-    return this.prisma.specifications.findMany({ where: { styleCode } });
+    return this.prisma.style.findMany({ where: { styleCode } });
   }
 
   update(id: string, updateSpecificationDto: any) {
-    return this.prisma.specifications.update({
+    return this.prisma.style.update({
       where: { id },
       data: updateSpecificationDto,
     });
   }
 
   remove(id: string) {
-    return this.prisma.specifications.delete({ where: { id } });
+    return this.prisma.style.delete({ where: { id } });
   }
 }

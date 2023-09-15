@@ -11,6 +11,17 @@ Table User {
   name String
   role Role
   roleId String
+  department Department
+  departmentId String
+}
+
+Table Department {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  name String
+  transferItems TransferItem [not null]
+  users User [not null]
 }
 
 Table Menu {
@@ -57,72 +68,6 @@ Table Pictures {
   updatedAt DateTime [not null]
 }
 
-Table Specifications {
-  id String [pk]
-  styleCode String
-  circleNumber String
-  circleNumberId String
-  singleWeight String
-  singleWeightId String
-  category String
-  categoryId String
-  pictures Json
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-}
-
-Table Customer {
-  id String [pk]
-  name String
-  telephone String
-  contactsName String
-  contactsPhone String
-  customerCode String [unique]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-}
-
-Table Employee {
-  id String [pk]
-  name String
-  age Int
-  employeeCode String [unique]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-  sex String
-  enabled Boolean [default: true]
-  remark String
-}
-
-Table Transfer {
-  id Int [pk, increment]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-  transferCode String [unique]
-  orderId String
-  customerCode String
-  customerName String
-  categoryId String
-  categoryTitle String
-  circle String
-  singleWeight String
-  styleCode String
-  remark String
-  transferItems TransferItem [not null]
-}
-
-Table TransferItem {
-  id Int [pk, increment]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-  transferCode String [unique]
-  orderId String
-  orderItemId String
-  remark String
-  transfer Transfer
-  transferId Int
-}
-
 Table Dictionary {
   id String [pk]
   title String
@@ -148,48 +93,129 @@ Table DictionaryItem {
   remark String
 }
 
+Table Style {
+  id String [pk]
+  styleCode String [unique]
+  circle String
+  singleWeight String
+  category String
+  categoryName String
+  src String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  orderDetails OrderDetail [not null]
+  transfers Transfer [not null]
+}
+
+Table Customer {
+  id String [pk]
+  name String
+  telephone String
+  contactsName String
+  contactsPhone String
+  customerCode String [unique]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  orders Order [not null]
+}
+
 Table Order {
   id String [pk]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   orderNumber String [unique, not null]
-  charactersId String
-  charactersTitle String
   orderDate DateTime
-  customerId String
-  customerCode String
-  customerName String
+  fontPrint String
+  fontPrintName String
   remark String
+  transfers Transfer [not null]
+  orderDetails OrderDetail [not null]
+  customer Customer
+  customerId String
 }
 
 Table OrderDetail {
   id String [pk]
-  orderId String
-  customerId String
-  customerCode String
-  customerName String
-  quantity Int
+  category String
+  categoryName String
   circle String
   singleWeight Decimal
+  quantity Int
   unitPrice Decimal
   totalPrice Decimal
-  styleCode String
-  transferNo String
-  categoryId String
-  categoryTitle String
-  categoryKey String
+  totalWeight Decimal
   remark String
-  productionStatus Int [not null, default: 0]
+  status Int [not null, default: 0]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  order Order
+  orderId String
+  style Style
+  styleId String
+}
+
+Table Transfer {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  transferCode String [unique]
+  category String
+  categoryName String
+  quantity Decimal
+  circle String
+  singleWeight String
+  fontPrint String
+  fontPrintName String
+  status Int [not null, default: 0]
+  remark String
+  transferItems TransferItem [not null]
+  order Order
+  orderId String
+  style Style
+  styleId String
+}
+
+Table TransferItem {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  type TransferType [not null]
+  weight Decimal
+  quantity Decimal
+  productType String
+  productTypeName String
+  remark String
+  department Department
+  departmentId String
+  transfer Transfer
+  transferId Int
+}
+
+Enum TransferType {
+  IN
+  OUT
 }
 
 Ref: User.roleId > Role.id [delete: Set Null]
+
+Ref: User.departmentId > Department.id
 
 Ref: MenusOnRoles.roleId > Role.id
 
 Ref: MenusOnRoles.menuId > Menu.id
 
-Ref: TransferItem.transferId > Transfer.id [delete: Set Null]
-
 Ref: DictionaryItem.dictId > Dictionary.id [delete: Set Null]
+
+Ref: Order.customerId > Customer.id [delete: Set Null]
+
+Ref: OrderDetail.orderId > Order.id [delete: Set Null]
+
+Ref: OrderDetail.styleId > Style.id [delete: Set Null]
+
+Ref: Transfer.orderId > Order.id [delete: Set Null]
+
+Ref: Transfer.styleId > Style.id [delete: Set Null]
+
+Ref: TransferItem.departmentId > Department.id [delete: Set Null]
+
+Ref: TransferItem.transferId > Transfer.id [delete: Set Null]

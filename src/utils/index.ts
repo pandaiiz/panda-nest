@@ -39,3 +39,8 @@ export const formatToTree = (data) => {
   });
   return parentList;
 };
+export const sleep = (time) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time);
+  });
+};
