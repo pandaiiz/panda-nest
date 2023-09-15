@@ -65,22 +65,20 @@ model Pictures {
   updatedAt DateTime @updatedAt
 }
 
-model Specifications {
-  id             String   @id @default(cuid())
+model Specification {
+  id           String   @id @default(cuid())
   // 款号
-  styleCode      String?
+  styleCode    String?
   // 圈号
-  circleNumber   String?
-  circleNumberId String?
+  circleNumber String?
   // 件重
-  singleWeight   String?
-  singleWeightId String?
+  singleWeight String?
   // 品类
-  category       String?
-  categoryId     String?
-  pictures       Json?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  category     String?
+  categoryName String?
+  src          String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Customer {
@@ -99,30 +97,14 @@ model Customer {
   updatedAt     DateTime @updatedAt
 }
 
-model Employee {
-  id           String   @id @default(cuid())
-  name         String?
-  age          Int?
-  employeeCode String?  @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  sex          String?
-  // 状态 启用停用
-  enabled      Boolean? @default(true)
-  // 备注
-  remark       String?
-}
-
 model Transfer {
   id            Int            @id @default(autoincrement())
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   transferCode  String?        @unique
   orderId       String?
-  customerCode  String?
-  customerName  String?
-  categoryId    String?
-  categoryTitle String?
+  category      String?
+  categoryName  String?
   // quantity      String?
   circle        String?
   singleWeight  String?
