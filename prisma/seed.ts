@@ -15,39 +15,66 @@ async function main() {
   // 建用户，建菜单，建角色，建用户角色关系
   // 关联关系：用户-角色，角色-菜单
   try {
-    const dictionary = await prisma.dictionary.createMany({
+    await prisma.dictionary.createMany({
       data: [
         {
           title: '品名',
           key: 'CATEGORY',
+        },
+        {
+          title: '收发产品类型',
+          key: 'PRODUCT_TYPE',
+        },
+        {
+          title: '字印',
+          key: 'FONT_PRINT',
         },
       ],
     });
 
     const dictionaryList = await prisma.dictionary.findMany({
       where: {
-        OR: [{ key: 'CATEGORY' }],
+        OR: [{ key: 'CATEGORY' }, { key: 'PRODUCT_TYPE' }],
       },
     });
 
     const dictionaryItemList = [];
     dictionaryList.forEach((item) => {
-      if (item.key === 'SINGLE_WEIGHT') {
+      if (item.key === 'PRODUCT_TYPE') {
         dictionaryItemList.push(
           {
             dictId: item.id,
-            itemKey: 'sw_12',
-            title: '单重12',
+            key: 'BCP',
+            title: '半成品',
           },
           {
             dictId: item.id,
-            itemKey: 'sw_14',
-            title: '单重14',
+            key: 'LP',
+            title: '良品',
           },
           {
             dictId: item.id,
-            itemKey: 'sw_16',
-            title: '单重16',
+            key: 'BLP',
+            title: '不良品',
+          },
+        );
+      }
+      if (item.key === 'FONT_PRINT') {
+        dictionaryItemList.push(
+          {
+            dictId: item.id,
+            key: '999J',
+            title: '999金',
+          },
+          {
+            dictId: item.id,
+            key: '999Y',
+            title: '999银',
+          },
+          {
+            dictId: item.id,
+            key: 'BK',
+            title: '补口',
           },
         );
       }
@@ -55,37 +82,28 @@ async function main() {
         dictionaryItemList.push(
           {
             dictId: item.id,
-            itemKey: '4n_z',
-            title: '4N直',
+            key: '5NHMTL',
+            title: '5N弧面推拉',
           },
           {
             dictId: item.id,
-            itemKey: '5n_f',
-            title: '5N方',
+            key: '5NTXTL',
+            title: '5N梯形推拉',
           },
           {
             dictId: item.id,
-            itemKey: '6n_y',
-            title: '6N圆',
-          },
-        );
-      }
-      if (item.key === 'CIRCLE') {
-        dictionaryItemList.push(
-          {
-            dictId: item.id,
-            itemKey: 'qh_16',
-            title: '圈号16',
+            key: '5NPMTL',
+            title: '5N平面推拉',
           },
           {
             dictId: item.id,
-            itemKey: 'qh_12',
-            title: '圈号12',
+            key: 'KZ',
+            title: '扣子',
           },
           {
             dictId: item.id,
-            itemKey: 'qh_14',
-            title: '圈号14',
+            key: '4NPMGK',
+            title: '4N平面固口',
           },
         );
       }

@@ -35,6 +35,26 @@ export async function generateMenu(superRole) {
         },
       ],
     });
+    const produceHubMenu = await prisma.menu.create({
+      data: {
+        title: '收发',
+        key: 'produce-hub',
+      },
+    });
+    await prisma.menu.createMany({
+      data: [
+        {
+          parentId: produceHubMenu.id,
+          title: '传递单',
+          key: 'produce-hub/transfer',
+        },
+        {
+          parentId: produceHubMenu.id,
+          title: '收发记录',
+          key: 'produce-hub/records',
+        },
+      ],
+    });
 
     const settingMenuList2 = await prisma.menu.findMany({
       where: {

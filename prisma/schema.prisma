@@ -29,7 +29,8 @@ model Department {
   id            String         @id @default(cuid())
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  name          String?
+  name          String
+  code          String         @unique
   transferItems TransferItem[]
   users         User[]
 }
@@ -77,15 +78,15 @@ model Pictures {
 }
 
 model Dictionary {
-  id      String   @id @default(cuid())
+  id      String  @id @default(cuid())
   // 字典名
-  title   String?
+  title   String
   // 字典编码
-  key     String?  @unique
-  // 状态 启用停用
-  enabled Boolean? @default(true)
+  key     String  @unique
+  // 状态 1启用0停用
+  enabled Int?    @default(1)
   // 排序
-  sort    Int?
+  sort    Int?    @default(0)
   // 备注
   remark  String?
 
@@ -102,13 +103,13 @@ model DictionaryItem {
   dict      Dictionary? @relation(fields: [dictId], references: [id], onDelete: SetNull, onUpdate: SetNull)
   dictId    String?
   // 行编码
-  itemKey   String?     @unique
+  key       String      @unique
   // 名称
-  title     String?
-  // 状态 启用停用
-  enabled   Boolean?    @default(true)
+  title     String
+  // 状态 1启用0停用
+  enabled   Int         @default(1)
   // 排序
-  sort      Int?
+  sort      Int?        @default(0)
   // 备注
   remark    String?
 }

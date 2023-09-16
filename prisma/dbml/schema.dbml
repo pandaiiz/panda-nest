@@ -19,7 +19,8 @@ Table Department {
   id String [pk]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  name String
+  name String [not null]
+  code String [unique, not null]
   transferItems TransferItem [not null]
   users User [not null]
 }
@@ -70,10 +71,10 @@ Table Pictures {
 
 Table Dictionary {
   id String [pk]
-  title String
-  key String [unique]
-  enabled Boolean [default: true]
-  sort Int
+  title String [not null]
+  key String [unique, not null]
+  enabled Int [default: 1]
+  sort Int [default: 0]
   remark String
   dictItems DictionaryItem [not null]
   createdAt DateTime [default: `now()`, not null]
@@ -86,10 +87,10 @@ Table DictionaryItem {
   updatedAt DateTime [not null]
   dict Dictionary
   dictId String
-  itemKey String [unique]
-  title String
-  enabled Boolean [default: true]
-  sort Int
+  key String [unique, not null]
+  title String [not null]
+  enabled Int [not null, default: 1]
+  sort Int [default: 0]
   remark String
 }
 

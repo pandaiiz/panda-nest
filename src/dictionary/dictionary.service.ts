@@ -44,17 +44,12 @@ export class DictionaryService {
     const dict = await this.prisma.dictionary.findFirst({
       where: {
         key,
-        enabled: true,
+        enabled: 1,
       },
       include: {
         dictItems: {
           where: {
-            enabled: true,
-          },
-          select: {
-            id: true,
-            itemKey: true,
-            title: true,
+            enabled: 1,
           },
         },
       },
