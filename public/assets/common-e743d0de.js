@@ -1,0 +1,1 @@
+const t={required:(n,{label:e})=>`必须填写${e}`,string:{length:"字符数必须是 #{length}",match:"不匹配正则 #{pattern}"},number:{min:"最小值为 #{min}",max:"最大值为 #{max}"}},a=(n,e)=>e.props.children.indexOf(n)>=0;export{a as f,t as v};

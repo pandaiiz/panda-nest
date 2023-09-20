@@ -11,6 +11,9 @@ import config from './common/configs/config';
 import { DictionaryModule } from './dictionary/dictionary.module';
 import { ModulesModule } from './modules/modules.module';
 import { PictureModule } from './picture/picture.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -26,6 +29,9 @@ import { PictureModule } from './picture/picture.module';
           }),
         ],
       },
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
     }),
     AuthModule,
     UsersModule,
