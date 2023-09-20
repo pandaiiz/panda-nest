@@ -231,7 +231,7 @@ model Transfer {
 }
 
 model TransferItem {
-  id              Int          @id @default(autoincrement())
+  id              String       @id @default(cuid())
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
   // 出入库类型 0出 1入 
@@ -248,6 +248,7 @@ model TransferItem {
   departmentId    String?
   transfer        Transfer?    @relation(fields: [transferId], references: [id], onDelete: SetNull, onUpdate: SetNull)
   transferId      Int?
+  transferCode    Int?
 }
 
 enum TransferType {

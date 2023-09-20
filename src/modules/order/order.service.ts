@@ -41,7 +41,6 @@ export class OrderService {
       const insertOrderDetails = this.prisma.orderDetail.createMany({
         data: orderDetailData,
       });
-
       const res = await this.prisma.$transaction([
         updateOrder,
         deleteOrderDetails,
@@ -59,13 +58,21 @@ export class OrderService {
   }
 
   findOrderDetailsById(id: string) {
-    return this.prisma.orderDetail.findMany({ where: { orderId: id } });
+    return this.prisma.orderDetail.findMany({
+      where: { orderId: id },
+    });
   }
   findAll() {
     return this.prisma.order.findMany();
   }
   findAllOrderDetails() {
-    return this.prisma.orderDetail.findMany();
+    return this.prisma.orderDetail.findMany({
+      include: {
+        order: {
+          include: { customer: true },
+        },
+      },
+    });
   }
   async getListByPaging(query: { pageSize?: 10; current?: 1 }) {
     const { pageSize = 10, current = 1 } = query;
@@ -91,7 +98,11 @@ export class OrderService {
   }
 
   remove(id: string) {
-    return this.prisma.order.delete({ where: { id } });
+    const deleteOrderDetails = this.prisma.orderDetail.deleteMany({
+      where: { orderId: id },
+    });
+    const deleteOrder = this.prisma.order.delete({ where: { id } });
+    return this.prisma.$transaction([deleteOrderDetails, deleteOrder]);
   }
   removeItem(id: string) {
     return this.prisma.orderDetail.delete({ where: { id } });

@@ -1,8 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Patch,
+  Post,
   Put,
   Query,
   UseGuards,
@@ -13,12 +16,17 @@ import { User } from './models/user.model';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { CreateRoleDto } from '../role/dto/create-role.dto';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('user')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
+  @Post()
+  create(@Body() createUserDto: any) {
+    return this.usersService.create(createUserDto);
+  }
   @Get('info')
   async getUserInfo(@UserEntity() user: User): Promise<any> {
     return user;
@@ -29,23 +37,16 @@ export class UsersController {
     return this.usersService.getUsersByPaging(query);
   }
 
-  @Put('user')
+  @Patch(':id')
   async updateUser(
-    @UserEntity() user: User,
+    @Param('id') id: string,
     @Body() newUserData: UpdateUserDto,
   ) {
-    return this.usersService.updateUser(user.id, newUserData);
+    return this.usersService.updateUser(id, newUserData);
   }
 
-  @Patch(':id')
-  async changePassword(
-    @UserEntity() user: User,
-    @Body() changePassword: ChangePasswordDto,
-  ) {
-    return this.usersService.changePassword(
-      user.id,
-      user.password,
-      changePassword,
-    );
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.usersService.remove(id);
   }
 }

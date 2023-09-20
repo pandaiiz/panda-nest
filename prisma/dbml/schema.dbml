@@ -177,7 +177,7 @@ Table Transfer {
 }
 
 Table TransferItem {
-  id Int [pk, increment]
+  id String [pk]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   type TransferType [not null]
@@ -190,6 +190,7 @@ Table TransferItem {
   departmentId String
   transfer Transfer
   transferId Int
+  transferCode Int
 }
 
 Enum TransferType {

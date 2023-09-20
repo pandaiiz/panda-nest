@@ -34,7 +34,11 @@ async function main() {
 
     const dictionaryList = await prisma.dictionary.findMany({
       where: {
-        OR: [{ key: 'CATEGORY' }, { key: 'PRODUCT_TYPE' }],
+        OR: [
+          { key: 'CATEGORY' },
+          { key: 'PRODUCT_TYPE' },
+          { key: 'FONT_PRINT' },
+        ],
       },
     });
 

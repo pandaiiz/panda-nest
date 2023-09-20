@@ -27,7 +27,6 @@ export class OrderController {
   }
   @Get('details')
   findAllOrderDetails() {
-    // findAllOrderDetails(@Query() query) {
     return this.orderService.findAllOrderDetails();
   }
   @Get('details/:id')
