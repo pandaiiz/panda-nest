@@ -1,0 +1,1 @@
+import{j as e,k as s,B as t}from"./index-6bfe4b1d.js";const a="_wrapper_vup5c_1",c="_result_vup5c_6",r={wrapper:a,result:c};function l(){return e("div",{className:r.container,children:e("div",{className:r.wrapper,children:e(s,{className:r.result,status:"403",subTitle:"对不起，您没有访问该资源的权限",extra:e(t,{type:"primary",children:"返回"},"back")})})})}export{l as default};

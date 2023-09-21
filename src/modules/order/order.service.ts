@@ -65,8 +65,12 @@ export class OrderService {
   findAll() {
     return this.prisma.order.findMany();
   }
-  findAllOrderDetails() {
+  findAllOrderDetails(params) {
+    const { status } = params;
     return this.prisma.orderDetail.findMany({
+      where: {
+        status: status ? +status : undefined,
+      },
       include: {
         order: {
           include: { customer: true },

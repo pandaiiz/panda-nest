@@ -13,22 +13,24 @@ export class TransferService {
     return this.prisma.transferItem.create({ data: createTransferItemDto });
   }
   async batchCreate(createTransferDto: any) {
-    /*const data = createTransferDto.map((item) => ({
-      orderId: item.orderId,
-      customerCode: item.customerCode,
-      customerName: item.customerName,
-      categoryName: item.categoryName,
-      category: item.category,
-      categoryId: item.categoryId,
-      categoryTitle: item.categoryTitle,
-      circle: item.circle,
-      singleWeight: item.singleWeight,
-      styleCode: item.styleCode,
-      remark: item.remark,
-    }));*/
+    const { orderDetails, transfers } = createTransferDto;
+    const orderDetailsIds = orderDetails.map((item) => item.id);
     try {
-      await this.prisma.transfer.createMany({ data: createTransferDto });
-      return { success: true };
+      const updateDetailsStatus = this.prisma.orderDetail.updateMany({
+        where: {
+          id: {
+            in: orderDetailsIds,
+          },
+        },
+        data: {
+          status: 1,
+        },
+      });
+
+      const createTransfers = this.prisma.transfer.createMany({
+        data: transfers,
+      });
+      return this.prisma.$transaction([updateDetailsStatus, createTransfers]);
     } catch (e) {
       console.log(e);
       return { success: false };

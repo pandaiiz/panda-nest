@@ -26,8 +26,8 @@ export class OrderController {
     return this.orderService.findAll();
   }
   @Get('details')
-  findAllOrderDetails() {
-    return this.orderService.findAllOrderDetails();
+  findAllOrderDetails(@Query() query: any) {
+    return this.orderService.findAllOrderDetails(query);
   }
   @Get('details/:id')
   findOrderDetailsById(@Param('id') id: string) {
