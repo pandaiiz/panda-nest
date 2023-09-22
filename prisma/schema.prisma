@@ -72,6 +72,7 @@ model MenusOnRoles {
 model Pictures {
   id        String   @id @default(cuid())
   src       String
+  name      String?
   sign      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -191,6 +192,8 @@ model OrderDetail {
   totalWeight  Decimal?
   // 备注
   remark       String?
+  // 图片
+  imgSrc       String?
 
   // 0未排产 1已排产
   status Int @default(0)

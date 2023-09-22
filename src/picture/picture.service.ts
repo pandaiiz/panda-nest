@@ -9,11 +9,12 @@ export class PictureService {
   constructor(private prisma: PrismaService) {}
 
   async create(pictureCreateDTO: PictureCreateDto): Promise<any> {
-    const { src, sign } = pictureCreateDTO;
+    const { src, sign, name } = pictureCreateDTO;
     const result = await this.prisma.pictures.create({
       data: {
         src,
         sign,
+        name,
       },
     });
     return {
@@ -26,13 +27,14 @@ export class PictureService {
   }
 
   async upload(file: any) {
-    const { buffer } = file;
+    const { buffer, originalname } = file;
 
     const currentSign = encryptFileMD5(buffer);
     const hasPicture = await this.getOneBySign(currentSign);
 
     if (hasPicture) {
       return {
+        name: originalname,
         src: hasPicture.src,
         isHas: true,
       };
@@ -46,9 +48,10 @@ export class PictureService {
 
     const src = `/static/uploaded/${fileName}`;
 
-    await this.create({ src, sign: currentSign });
+    await this.create({ src, sign: currentSign, name: originalname });
 
     return {
+      name: originalname,
       src,
       isHas: false,
     };
