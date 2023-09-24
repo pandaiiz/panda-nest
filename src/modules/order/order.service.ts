@@ -74,9 +74,7 @@ export class OrderService {
     return this.prisma.orderDetail.findMany({
       where: {
         status: status ? +status : undefined,
-        category: {
-          contains: category,
-        },
+        category,
         order: {
           orderNumber: {
             contains: orderNumber,
