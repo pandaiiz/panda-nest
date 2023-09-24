@@ -1,1 +1,0 @@
-import{aJ as r}from"./index-f1de8f67.js";const t=e=>r.get("/api/order/paging",{params:e}),s=e=>r.get(`/api/order/details/${e}`),o=e=>r.post("/api/order",e),i=(e,d)=>r.patch(`/api/order/${e}`,d),p=e=>r.delete(`/api/order/${e}`),g=e=>r.delete(`/api/order/detail/${e}`);export{o as a,t as b,p as c,g as d,s as g,i as u};

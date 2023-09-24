@@ -1,1 +1,0 @@
-import{aJ as e}from"./index-6bfe4b1d.js";const n=t=>e.get("/api/department/paging",{params:t}),r=()=>e.get("/api/department"),s=t=>e.post("/api/department",t),d=(t,a)=>e.patch(`/api/department/${t}`,a),m=t=>e.delete(`/api/department/${t}`);export{s as a,r as b,m as d,n as g,d as u};
