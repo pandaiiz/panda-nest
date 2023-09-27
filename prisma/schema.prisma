@@ -119,10 +119,6 @@ model Style {
   id           String   @id @default(cuid())
   // 款号
   styleCode    String?  @unique
-  // 圈号
-  circle       String?
-  // 件重
-  singleWeight String?
   // 品类
   category     String?
   categoryName String?

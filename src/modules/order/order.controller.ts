@@ -39,6 +39,10 @@ export class OrderController {
     return this.orderService.getListByPaging(query);
   }
 
+  @Get('copy/:id')
+  copyOrderById(@Param('id') id: string) {
+    return this.orderService.copyOrderById(id);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.orderService.findOne(id);

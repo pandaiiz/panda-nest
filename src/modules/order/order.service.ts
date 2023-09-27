@@ -110,6 +110,47 @@ export class OrderService {
   findOne(id: string) {
     return this.prisma.order.findUnique({ where: { id } });
   }
+  async copyOrderById(id: string) {
+    const oldOrder = await this.prisma.order.findUnique({
+      where: { id },
+      include: {
+        orderDetails: true,
+        customer: true,
+      },
+    });
+
+    const orderData = {
+      customerId: oldOrder.customer.id,
+      fontPrint: oldOrder.fontPrint,
+      fontPrintName: oldOrder.fontPrintName,
+      orderDate: oldOrder.orderDate,
+      orderNumber: oldOrder.orderNumber + `-1`,
+      remark: oldOrder.remark,
+    };
+
+    const orderDetailData = oldOrder.orderDetails.map((item) => ({
+      category: item.category,
+      categoryName: item.categoryName,
+      circle: item.circle,
+      imgSrc: item.imgSrc,
+      quantity: item.quantity,
+      singleWeight: item.singleWeight,
+    }));
+
+    try {
+      await this.prisma.order.create({
+        data: {
+          ...orderData,
+          orderDetails: {
+            createMany: { data: orderDetailData },
+          },
+        },
+      });
+      return { success: true, msg: '创建成功！' };
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 
   remove(id: string) {
     const deleteOrderDetails = this.prisma.orderDetail.deleteMany({
