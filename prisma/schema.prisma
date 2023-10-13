@@ -25,6 +25,8 @@ model User {
   roleId       String?
   department   Department? @relation(fields: [departmentId], references: [id])
   departmentId String?
+
+  styles Style[]
 }
 
 model Department {
@@ -119,15 +121,31 @@ model DictionaryItem {
 }
 
 model Style {
-  id           String   @id @default(cuid())
+  id           String  @id @default(cuid())
   // 款号
-  styleCode    String?  @unique
-  // 品类
+  styleCode    String? @unique
+  // 品名
   category     String?
   categoryName String?
-  src          String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  // 规格
+  spec         String?
+  specName     String?
+  // 工艺
+  tech         String?
+  techName     String?
+  // 编程
+  programmerId String?
+  programmer   User?   @relation(fields: [programmerId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+
+  // 设计图
+  designSrc  String?
+  // 编程图
+  programSrc String?
+  // 实拍图
+  realitySrc String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   orderDetails OrderDetail[]
   transfers    Transfer[]

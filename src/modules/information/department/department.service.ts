@@ -49,7 +49,16 @@ export class DepartmentService {
     };
   }
   findOne(id: string) {
-    return `This action returns a #${id} employee`;
+    return this.prisma.department.findUnique({
+      where: { id },
+      include: { users: true },
+    });
+  }
+  findOneByCode(code: string) {
+    return this.prisma.department.findUnique({
+      where: { code },
+      include: { users: true },
+    });
   }
 
   update(id: string, updateDepartmentDto: UpdateDepartmentDto) {

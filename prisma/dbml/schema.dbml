@@ -14,6 +14,7 @@ Table User {
   roleId String
   department Department
   departmentId String
+  styles Style [not null]
 }
 
 Table Department {
@@ -101,7 +102,15 @@ Table Style {
   styleCode String [unique]
   category String
   categoryName String
-  src String
+  spec String
+  specName String
+  tech String
+  techName String
+  programmerId String
+  programmer User
+  designSrc String
+  programSrc String
+  realitySrc String
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   orderDetails OrderDetail [not null]
@@ -208,6 +217,8 @@ Ref: MenusOnRoles.roleId > Role.id
 Ref: MenusOnRoles.menuId > Menu.id
 
 Ref: DictionaryItem.dictId > Dictionary.id [delete: Set Null]
+
+Ref: Style.programmerId > User.id [delete: Set Null]
 
 Ref: Order.customerId > Customer.id [delete: Set Null]
 

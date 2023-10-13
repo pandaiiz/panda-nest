@@ -35,6 +35,11 @@ export class DepartmentController {
     return this.departmentService.findOne(id);
   }
 
+  @Get('code/:code')
+  findOneByCode(@Param('code') code: string) {
+    return this.departmentService.findOneByCode(code);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
