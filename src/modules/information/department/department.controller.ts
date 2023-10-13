@@ -26,7 +26,7 @@ export class DepartmentController {
     return this.departmentService.findAll();
   }
   @Get('paging')
-  async getListByPaging(@Query() query) {
+  async getListByPaging(@Query() query: any) {
     return this.departmentService.getListByPaging(query);
   }
 

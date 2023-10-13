@@ -17,17 +17,28 @@ export class UsersService {
     private passwordService: PasswordService,
   ) {}
 
-  async getUsersByPaging(query: { pageSize?: 10; current?: 1; account: any }) {
-    const { pageSize = 10, current = 1, account } = query;
+  async getUsersByPaging(query: {
+    pageSize?: 10;
+    current?: 1;
+    account: any;
+    departmentId: string;
+    name: string;
+  }) {
+    const { pageSize = 10, current = 1, account, departmentId, name } = query;
     const [users, count] = await this.prisma.$transaction([
       this.prisma.user.findMany({
         include: {
           role: true,
+          department: true,
         },
         where: {
           account: {
             contains: account,
           },
+          name: {
+            contains: name,
+          },
+          departmentId,
         },
         skip: +pageSize * (+current - 1),
         take: +pageSize,

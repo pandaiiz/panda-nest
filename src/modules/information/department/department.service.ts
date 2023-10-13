@@ -31,6 +31,11 @@ export class DepartmentService {
             contains: code,
           },
         },
+        include: {
+          _count: {
+            select: { users: true },
+          },
+        },
         skip: +pageSize * (+current - 1),
         take: +pageSize,
       }),
