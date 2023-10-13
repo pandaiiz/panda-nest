@@ -57,7 +57,6 @@ export class RoleService {
   async remove(id: string) {
     try {
       const res = await this.prisma.role.delete({ where: { id } });
-      console.log(res);
     } catch (e) {
       console.log(e);
     }

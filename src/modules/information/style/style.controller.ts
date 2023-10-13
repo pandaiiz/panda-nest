@@ -11,7 +11,7 @@ import {
 import { StyleService } from './style.service';
 import { UpdateStyleDto } from './dto/update-style.dto';
 
-@Controller('specifications')
+@Controller('style')
 export class StyleController {
   constructor(private readonly styleService: StyleService) {}
 

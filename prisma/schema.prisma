@@ -17,6 +17,8 @@ model User {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   account      String      @unique
+  // 员工编码，适配编程师傅
+  code         String?     @unique
   password     String
   name         String?
   role         Role?       @relation(fields: [roleId], references: [id], onDelete: SetNull, onUpdate: SetNull)

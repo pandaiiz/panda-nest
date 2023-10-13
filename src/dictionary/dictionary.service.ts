@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateDictionaryDto } from './dto/update-dictionary.dto';
 import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
@@ -21,6 +20,9 @@ export class DictionaryService {
       include: {
         dictItems: true,
       },
+      orderBy: {
+        sort: 'asc',
+      },
     });
   }
 
@@ -35,7 +37,11 @@ export class DictionaryService {
         id: dictId,
       },
       include: {
-        dictItems: true,
+        dictItems: {
+          orderBy: {
+            sort: 'asc',
+          },
+        },
       },
     });
     return dict?.dictItems || [];
@@ -58,14 +64,12 @@ export class DictionaryService {
   }
 
   update(id: string, updateDictionaryDto: any) {
-    console.log(updateDictionaryDto);
     return this.prisma.dictionary.update({
       where: { id },
       data: updateDictionaryDto,
     });
   }
   updateItem(id: string, updateDictionaryItemDto: any) {
-    console.log(updateDictionaryItemDto);
     return this.prisma.dictionaryItem.update({
       where: { id },
       data: updateDictionaryItemDto,
