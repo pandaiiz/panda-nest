@@ -22,7 +22,7 @@ export class RoleService {
         menus: {
           where: {
             menu: {
-              enabled: true,
+              enabled: 1,
             },
           },
           include: {

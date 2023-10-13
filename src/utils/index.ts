@@ -1,3 +1,5 @@
+import { sortBy } from 'lodash';
+
 /**
  * 计算分页
  * @param total
@@ -37,7 +39,7 @@ export const formatToTree = (data) => {
       parentList.push(item);
     }
   });
-  return parentList;
+  return sortBy(parentList, 'sort');
 };
 export const sleep = (time) => {
   return new Promise((resolve) => {

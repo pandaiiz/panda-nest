@@ -46,7 +46,8 @@ model Menu {
   key        String         @unique
   sort       Int            @default(0)
   remark     String?
-  enabled    Boolean?       @default(true)
+  // 状态 1启用0停用
+  enabled    Int            @default(1)
   breadcrumb Boolean?       @default(false)
   ignore     Boolean?       @default(false)
   roles      MenusOnRoles[]

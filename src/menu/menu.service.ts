@@ -12,7 +12,9 @@ export class MenuService {
   }
 
   async findAll() {
-    const menuList = await this.prisma.menu.findMany();
+    const menuList = await this.prisma.menu.findMany({
+      orderBy: { sort: 'asc' },
+    });
     return formatToTree(menuList);
   }
 

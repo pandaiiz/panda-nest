@@ -82,9 +82,14 @@ export class AuthService {
         role: {
           include: {
             menus: {
+              orderBy: {
+                menu: {
+                  sort: 'asc',
+                },
+              },
               where: {
                 menu: {
-                  enabled: true,
+                  enabled: 1,
                 },
               },
               include: {

@@ -35,7 +35,7 @@ Table Menu {
   key String [unique, not null]
   sort Int [not null, default: 0]
   remark String
-  enabled Boolean [default: true]
+  enabled Int [not null, default: 1]
   breadcrumb Boolean [default: false]
   ignore Boolean [default: false]
   roles MenusOnRoles [not null]
