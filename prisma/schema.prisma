@@ -121,28 +121,34 @@ model DictionaryItem {
 }
 
 model Style {
-  id           String  @id @default(cuid())
+  id            String  @id @default(cuid())
+  // 基础款号，用于生成同款多样式，比如基础款号为A2112，那么款号就是A2112-1 A2112-2
+  baseStyleCode String?
   // 款号
-  styleCode    String? @unique
+  styleCode     String? @unique
   // 品名
-  category     String?
-  categoryName String?
+  category      String?
+  categoryName  String?
   // 规格
-  spec         String?
-  specName     String?
+  spec          String?
+  specName      String?
   // 工艺
-  tech         String?
-  techName     String?
+  tech          String?
+  techName      String?
   // 编程
-  programmerId String?
-  programmer   User?   @relation(fields: [programmerId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  programmerId  String?
+  programmer    User?   @relation(fields: [programmerId], references: [id], onDelete: SetNull, onUpdate: SetNull)
 
   // 设计图
-  designSrc  String?
+  designSrc  Json?
   // 编程图
-  programSrc String?
+  programSrc Json?
   // 实拍图
-  realitySrc String?
+  realitySrc Json?
+
+  tags String?
+
+  isDelete Int? @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

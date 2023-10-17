@@ -14,7 +14,6 @@ import { UpdateStyleDto } from './dto/update-style.dto';
 @Controller('style')
 export class StyleController {
   constructor(private readonly styleService: StyleService) {}
-
   @Post()
   create(@Body() createSpecificationDto: any) {
     return this.styleService.create(createSpecificationDto);
@@ -26,7 +25,7 @@ export class StyleController {
   }
 
   @Get('paging')
-  async getListByPaging(@Query() query) {
+  async getListByPaging(@Query() query: any) {
     return this.styleService.getListByPaging(query);
   }
 
@@ -35,8 +34,12 @@ export class StyleController {
     return this.styleService.findOne(id);
   }
   @Get('code/:code')
-  findOneByCode(@Param('styleCode') code: string) {
+  findOneByCode(@Param('code') code: string) {
     return this.styleService.findOneByCode(code);
+  }
+  @Get('baseCode/:baseStyleCode')
+  findListByBaseCode(@Param('baseStyleCode') baseStyleCode: string) {
+    return this.styleService.findListByBaseCode(baseStyleCode);
   }
 
   @Patch(':id')
