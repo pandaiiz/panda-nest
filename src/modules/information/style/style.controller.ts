@@ -41,6 +41,10 @@ export class StyleController {
   findListByBaseCode(@Param('baseStyleCode') baseStyleCode: string) {
     return this.styleService.findListByBaseCode(baseStyleCode);
   }
+  @Get('filter/:filter')
+  findListByFilter(@Param('filter') filter: string) {
+    return this.styleService.findListByFilter(filter);
+  }
 
   @Patch(':id')
   update(

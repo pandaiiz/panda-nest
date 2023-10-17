@@ -81,6 +81,16 @@ export class StyleService {
   findListByBaseCode(baseStyleCode: string) {
     return this.prisma.style.findMany({ where: { baseStyleCode } });
   }
+  findListByFilter(filter: string) {
+    return this.prisma.style.findMany({
+      where: {
+        OR: [
+          { tags: { contains: filter } },
+          { styleCode: { contains: filter } },
+        ],
+      },
+    });
+  }
 
   update(id: string, updateSpecificationDto: any) {
     return this.prisma.style.update({

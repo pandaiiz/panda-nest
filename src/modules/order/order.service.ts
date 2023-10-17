@@ -60,6 +60,9 @@ export class OrderService {
   findOrderDetailsById(id: string) {
     return this.prisma.orderDetail.findMany({
       where: { orderId: id },
+      include: {
+        style: true,
+      },
     });
   }
   findAll() {
