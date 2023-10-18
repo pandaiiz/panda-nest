@@ -53,11 +53,20 @@ export class TransferService {
       },
     };
   }
-  async getListByPaging(query: { pageSize?: 10; current?: 1 }) {
-    const { pageSize = 10, current = 1 } = query;
+  async getListByPaging(query: {
+    pageSize?: 10;
+    current?: 1;
+    status: number;
+    id: number;
+  }) {
+    const { pageSize = 10, current = 1, status, id } = query;
     const [orders, count] = await this.prisma.$transaction([
       this.prisma.transfer.findMany({
-        include: { order: { include: { customer: true } } },
+        where: {
+          status: status && +status,
+          id: id && +id,
+        },
+        include: { order: { include: { customer: true } }, style: true },
         skip: +pageSize * (+current - 1),
         take: +pageSize,
       }),
@@ -80,6 +89,18 @@ export class TransferService {
 
   update(id: number, updateTransferDto: UpdateTransferDto) {
     return `This action updates a #${id} transfer`;
+  }
+  batchPrintPatch(updateTransferDto: any) {
+    return this.prisma.transfer.updateMany({
+      where: {
+        id: {
+          in: updateTransferDto,
+        },
+      },
+      data: {
+        status: 1,
+      },
+    });
   }
 
   remove(id: number) {

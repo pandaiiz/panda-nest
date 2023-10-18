@@ -88,6 +88,7 @@ export class OrderService {
         order: {
           include: { customer: true },
         },
+        style: true,
       },
     });
   }

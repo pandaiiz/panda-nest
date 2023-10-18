@@ -176,18 +176,19 @@ model Customer {
 }
 
 model Order {
-  id               String    @id @default(cuid())
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-  orderTotalWeight Float?
-  orderNumber      String    @unique
+  id                 String    @id @default(cuid())
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  orderTotalWeight   Float?
+  orderTotalQuantity Float?
+  orderNumber        String    @unique
   // 订单日期
-  orderDate        DateTime?
+  orderDate          DateTime?
   // 字印
-  fontPrint        String?
-  fontPrintName    String?
+  fontPrint          String?
+  fontPrintName      String?
   // 备注
-  remark           String?
+  remark             String?
 
   transfers    Transfer[]
   orderDetails OrderDetail[]
@@ -237,15 +238,9 @@ model Transfer {
   id            Int            @id @default(autoincrement())
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  transferCode  String?        @unique
-  category      String?
-  categoryName  String?
   quantity      Decimal?
   circle        String?
   singleWeight  String?
-  // 字印
-  fontPrint     String?
-  fontPrintName String?
   // 状态 0未生产 1生产中，2完单
   status        Int            @default(0)
   // 备注
@@ -275,7 +270,6 @@ model TransferItem {
   departmentId    String?
   transfer        Transfer?    @relation(fields: [transferId], references: [id], onDelete: SetNull, onUpdate: SetNull)
   transferId      Int?
-  transferCode    Int?
 }
 
 enum TransferType {

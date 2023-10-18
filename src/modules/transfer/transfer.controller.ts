@@ -38,7 +38,7 @@ export class TransferController {
     return this.transferService.getDetailsListByPaging(query);
   }
   @Get('paging')
-  async getListByPaging(@Query() query) {
+  async getListByPaging(@Query() query: any) {
     return this.transferService.getListByPaging(query);
   }
   @Get(':id')
@@ -52,6 +52,10 @@ export class TransferController {
     @Body() updateTransferDto: UpdateTransferDto,
   ) {
     return this.transferService.update(+id, updateTransferDto);
+  }
+  @Post('batchPrint')
+  batchPrintPatch(@Body() updateTransferDto: UpdateTransferDto) {
+    return this.transferService.batchPrintPatch(updateTransferDto);
   }
 
   @Delete(':id')
