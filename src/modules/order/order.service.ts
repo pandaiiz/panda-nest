@@ -100,6 +100,7 @@ export class OrderService {
         take: +pageSize,
         include: {
           customer: true,
+          transfers: true,
         },
       }),
       this.prisma.order.count(),

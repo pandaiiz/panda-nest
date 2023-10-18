@@ -241,7 +241,7 @@ model Transfer {
   quantity      Decimal?
   circle        String?
   singleWeight  String?
-  // 状态 0未生产 1生产中，2完单
+  // 状态 0未生产 1生产中，2完单，3已出货
   status        Int            @default(0)
   // 备注
   remark        String?

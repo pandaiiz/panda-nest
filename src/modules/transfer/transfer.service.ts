@@ -32,7 +32,6 @@ export class TransferService {
       });
       return this.prisma.$transaction([updateDetailsStatus, createTransfers]);
     } catch (e) {
-      console.log(e);
       return { success: false };
     }
   }
@@ -70,7 +69,12 @@ export class TransferService {
         skip: +pageSize * (+current - 1),
         take: +pageSize,
       }),
-      this.prisma.transfer.count(),
+      this.prisma.transfer.count({
+        where: {
+          status: status && +status,
+          id: id && +id,
+        },
+      }),
     ]);
     return {
       data: orders,
@@ -88,7 +92,10 @@ export class TransferService {
   }
 
   update(id: number, updateTransferDto: UpdateTransferDto) {
-    return `This action updates a #${id} transfer`;
+    return this.prisma.transfer.update({
+      where: { id },
+      data: updateTransferDto,
+    });
   }
   batchPrintPatch(updateTransferDto: any) {
     return this.prisma.transfer.updateMany({
