@@ -110,7 +110,7 @@ export class TransferService {
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} transfer`;
   }
 }

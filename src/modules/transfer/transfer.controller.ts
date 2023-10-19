@@ -60,6 +60,6 @@ export class TransferController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.transferService.remove(+id);
+    return this.transferService.remove(id);
   }
 }
