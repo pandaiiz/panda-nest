@@ -9,6 +9,11 @@ export class StyleService {
       data: createSpecificationDto,
     });
   }
+  batchCreate(data: any[]) {
+    return this.prisma.style.createMany({
+      data,
+    });
+  }
 
   findAll() {
     return `This action returns all style`;

@@ -18,6 +18,10 @@ export class StyleController {
   create(@Body() createSpecificationDto: any) {
     return this.styleService.create(createSpecificationDto);
   }
+  @Post('batch')
+  batchCreate(@Body() data: any) {
+    return this.styleService.batchCreate(data);
+  }
 
   @Get()
   findAll() {

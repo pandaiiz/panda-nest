@@ -10,10 +10,10 @@ import { RoleModule } from './role/role.module';
 import config from './common/configs/config';
 import { DictionaryModule } from './dictionary/dictionary.module';
 import { ModulesModule } from './modules/modules.module';
-import { PictureModule } from './picture/picture.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { join } from 'path';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -39,7 +39,7 @@ import { join } from 'path';
     RoleModule,
     DictionaryModule,
     ModulesModule,
-    PictureModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

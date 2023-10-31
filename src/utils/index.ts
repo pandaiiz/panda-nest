@@ -46,3 +46,6 @@ export const sleep = (time) => {
     setTimeout(resolve, time);
   });
 };
+export const toUtf8 = (name: string) => {
+  return Buffer.from(name, 'latin1').toString('utf8');
+};

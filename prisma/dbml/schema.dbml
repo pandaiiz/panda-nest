@@ -63,13 +63,17 @@ Table MenusOnRoles {
   }
 }
 
-Table Pictures {
+Table Uploads {
   id String [pk]
   src String [not null]
   name String
   sign String [unique, not null]
+  type String [default: 'image']
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  parent Uploads
+  parentId String
+  children Uploads [not null]
 }
 
 Table Dictionary {
@@ -201,6 +205,7 @@ Table TransferItem {
   departmentId String
   transfer Transfer
   transferId Int
+  isDelete Int [default: 0]
 }
 
 Enum TransferType {
@@ -215,6 +220,8 @@ Ref: User.departmentId > Department.id
 Ref: MenusOnRoles.roleId > Role.id
 
 Ref: MenusOnRoles.menuId > Menu.id
+
+Ref: Uploads.parentId - Uploads.id
 
 Ref: DictionaryItem.dictId > Dictionary.id [delete: Set Null]
 
