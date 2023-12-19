@@ -62,4 +62,15 @@ export class TransferController {
   remove(@Param('id') id: string) {
     return this.transferService.remove(id);
   }
+
+  @Delete('detail/:id')
+  removeItem(@Param('id') id: string) {
+    return this.transferService.removeItem(id);
+  }
+
+
+  @Get('last-item/:id')
+  getLastTransferDetailByTransferId(@Param('id') id: any) {
+    return this.transferService.getLastTransferDetailByTransferId(+id);
+  }
 }

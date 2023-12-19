@@ -5,7 +5,7 @@ import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
 export class TransferService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   create(createTransferDto: CreateTransferDto) {
     return 'This action adds a new transfer';
   }
@@ -39,7 +39,11 @@ export class TransferService {
     const { pageSize = 10, current = 1 } = query;
     const [orderDetails, count] = await this.prisma.$transaction([
       this.prisma.transferItem.findMany({
-        include: { department: true },
+        include: {
+          department: true, transfer: {
+            include: { style: true }
+          }
+        },
         skip: +pageSize * (+current - 1),
         take: +pageSize,
       }),
@@ -111,6 +115,20 @@ export class TransferService {
   }
 
   remove(id: string) {
-    return `This action removes a #${id} transfer`;
+    return this.prisma.transferItem.delete({ where: { id } })
+  }
+  removeItem(id: string) {
+    return this.prisma.transferItem.delete({ where: { id } })
+  }
+  getLastTransferDetailByTransferId(id: number) {
+    return this.prisma.transferItem.findMany({
+      where: {
+        transferId: id
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 1
+    })
   }
 }
